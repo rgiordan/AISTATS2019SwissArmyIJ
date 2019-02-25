@@ -1,0 +1,1 @@
+This folder is where we put the fits after running variational Bayes. 

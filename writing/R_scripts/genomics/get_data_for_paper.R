@@ -1,5 +1,5 @@
 # This script post-processes the output of
-# InfinitesimalJackknifeGenomicsExperiment/examine_and_save_results.ipynb,
+# AISTATS2019SwissArmyIJ/genomics/examine_and_save_results.ipynb,
 # and produces the file genomics_data_for_paper.Rdata, which is used, per its name,
 # for the graphs in the actual paper.
 #

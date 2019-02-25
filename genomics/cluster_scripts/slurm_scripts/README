@@ -1,0 +1,1 @@
+This directory contains auto-generated scripts to be passed to slurm.  They are generated and called by python scripts in the parent directory.
