@@ -1,0 +1,219 @@
+\documentclass{article}
+
+\usepackage{etoolbox}
+
+% Set this toggle true to compile a version for the arxiv, and
+% false to compile for the currently configured conference.
+% NOTE: you also must set the single_column flags in the Rnw files to
+% make side-by-side figures for the arxiv version.
+\newtoggle{for_arxiv}
+%\toggletrue{for_arxiv}
+\togglefalse{for_arxiv}
+
+\nottoggle{for_arxiv}{%
+    \usepackage[accepted]{aistats2019} % hooray!
+    % \usepackage{aistats2019}
+}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{xargs}[2008/03/08]
+
+\iftoggle{for_arxiv} {
+    \usepackage[authoryear]{natbib}
+} {
+    \usepackage[round]{natbib}
+    \renewcommand{\bibname}{References}
+    \renewcommand{\bibsection}{\subsubsection*{\bibname}}
+}
+
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+
+\usepackage{prettyref}
+\usepackage{refstyle}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{colonequals}
+\usepackage{algpseudocode, algorithm} %typical alg typesetting packages
+
+\usepackage{listings}
+\usepackage{pdfpages}
+
+% Define things needed to incorporate the LyX appendix.
+% We can define things redundantly if necessary, but please don't modify
+% this file -- if there's a name clash for a function you want to define,
+% please just pick a new name.
+\input{lyx_commands.tex}
+
+% This picks up the knitr boilerplate, allowing us to \input partial knitr
+% documents.
+\input{knitr_header.tex}
+
+% Paper-specific math macros (not in the appendix).
+\global\long\def\wcv{W_k}
+\global\long\def\wboot{W^*_B}
+\global\long\def\thetapw{\thetahat(w)}
+\global\long\def\wdiff{\Delta w}
+
+
+\newcommand{\eq}[1]{Eq.~\ref{eq:#1}}
+\newcommand{\fig}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\rthm}[1]{Theorem~\ref{thm:#1}}
+\newcommand{\sect}[1]{Section~\ref{sec:#1}}
+\newcommand{\subsect}[1]{Section~\ref{subsec:#1}}
+\newcommand{\assum}[1]{Assumption~\ref{assum:#1}}
+\newcommand{\lemma}[1]{Lemma~\ref{lm:#1}}
+\newcommand{\corollary}[1]{Corollary~\ref{cor:#1}}
+\newcommand{\app}[1]{Appendix~\ref{app:#1}}
+\newcommand{\appsect}[1]{Appendix~\ref{sec:#1}}
+
+\newcommand{\coreassum}{Assumptions \ref{assu:paper_smoothness}--\ref{assu:paper_lipschitz} }
+\newcommand{\paperallcoreassum}{Assumptions \ref{assu:paper_smoothness}--\ref{assu:paper_weight_bounded} }
+
+\iftoggle{for_arxiv}{%
+    \title{A Swiss Army Infinitesimal Jackknife}
+    \author{
+      Ryan Giordano\\ \texttt{rgiordano@berkeley.edu}
+      \and
+      Will Stephenson\\ \texttt{wtstephe@mit.edu}
+      \and
+      Runjing Liu\\ \texttt{runjing\_liu@berkeley.edu}
+      \and
+      Michael I.~Jordan\\ \texttt{jordan@cs.berkeley.edu}
+      \and
+      Tamara Broderick\\ \texttt{tbroderick@csail.mit.edu}
+    }
+}
+
+
+\begin{document}
+
+\iftoggle{for_arxiv} {
+    \maketitle
+}
+
+\nottoggle{for_arxiv} {
+\twocolumn[
+    \aistatstitle{A Swiss Army Infinitesimal Jackknife}
+
+    \aistatsauthor{
+        Ryan Giordano \And
+        Will Stephenson \And
+        Runjing Liu \And
+        Michael I.~Jordan \And
+        Tamara Broderick
+    }
+    \aistatsaddress{
+        UC Berkeley \And
+        MIT \And
+        UC Berkeley \And
+        UC Berkeley \And
+        MIT
+    }
+]
+}
+
+\begin{abstract}
+%
+The error or variability of machine learning algorithms is often assessed by
+repeatedly re-fitting a model with different weighted versions of the observed
+data. The ubiquitous tools of cross-validation (CV) and the bootstrap are
+examples of this technique. These methods are powerful in large part due to
+their model agnosticism but can be slow to run on modern, large data sets due to
+the need to repeatedly re-fit the model. In this work, we use a linear
+approximation to the dependence of the fitting procedure on the weights,
+producing results that can be faster than repeated re-fitting by an order of
+magnitude. This linear approximation is sometimes known as the ``infinitesimal
+jackknife'' in the statistics literature, where it is mostly used as a
+theoretical tool to prove asymptotic results. We provide explicit finite-sample
+error bounds for the infinitesimal jackknife in terms of a small number of
+simple, verifiable assumptions. Our results apply whether the weights and data
+are stochastic or deterministic, and so can be used as a tool for proving the
+accuracy of the infinitesimal jackknife on a wide variety of problems. As a
+corollary, we state mild regularity conditions under which our approximation
+consistently estimates true leave-$k$-out cross-validation for any fixed $k$.
+These theoretical results, together with modern automatic differentiation
+software, support the application of the infinitesimal jackknife to a wide
+variety of practical problems in machine learning, providing a ``Swiss Army
+infinitesimal jackknife.'' We demonstrate the accuracy of our methods on a range
+of simulated and real datasets.
+
+%
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+\input{introduction.tex}
+
+
+\section{Methods and Results}\label{sec:methods}
+
+\subsection{Problem definition}\label{subsec:problem_definition}
+\input{problem_definition.tex}
+
+\subsection{Linear approximation}
+\input{linear_approximation.tex}
+
+\subsection{Assumptions and results}\label{subsec:assumptions}
+\input{assumptions_and_results.tex}
+
+
+\section{Examples}\label{sec:methods_examples}
+\input{examples.tex}
+
+
+\section{Related Work}\label{sec:relatedwork}
+\input{related_work.tex}
+
+
+\section{Simulated Experiments}
+% This file is built with knit_synthetic_to_tex.sh.
+\input{simulated_experiments.tex}
+
+
+\section{Genomics Experiments\label{sec:genomics}}
+% This file is built with knit_real_data_to_tex.sh.
+\input{real_data_experiments.tex}
+
+
+\section{Conclusion}
+\input{conclusion.tex}
+
+\newpage
+\input{acknowledgements.tex}
+
+\bibliography{references}
+\bibliographystyle{plainnat}
+
+\newpage
+\onecolumn
+\appendix
+
+\input{app_theory.tex}
+
+\section{Genomics Experiments Details}\label{sec:appendix_genomics}
+
+We demonstrate the Python and R code used to run and analyze the experiments on
+the genomics data in a sequence of Jupyter notebooks. The output of these
+notebooks are included below, though they are best viewed in their original
+notebook form. The notebooks, as well as scripts and instructions for
+reproducing our analysis in its entirety, can be found in the git repository
+\href{https://github.com/rgiordan/AISTATS2019SwissArmyIJ}{rgiordan/AISTATS2019SwissArmyIJ}.
+
+\includepdf[pages=1-, scale=0.8, pagecommand={}]{appendix_pdfs/fit_model_and_save.pdf}
+\includepdf[pages=1-, scale=0.8, pagecommand={}]{appendix_pdfs/load_and_refit.pdf}
+\includepdf[pages=1-, scale=0.8, pagecommand={}]{appendix_pdfs/calculate_prediction_errors.pdf}
+\includepdf[pages=1-, scale=0.8, pagecommand={}]{appendix_pdfs/examine_and_save_results.pdf}
+
+\end{document}

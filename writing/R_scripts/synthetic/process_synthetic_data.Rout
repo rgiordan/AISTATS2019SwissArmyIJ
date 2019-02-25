@@ -1,0 +1,290 @@
+
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> #########################################
+> # Develop and debug your graphs in R
+> 
+> library(ggplot2)
+> library(reshape2)
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> 
+> knitr_debug <- FALSE
+> 
+> setwd("/home/rgiordan/Documents/git_repos/AISTATS2019SwissArmyIJ/writing/R_scripts")
+> git_repo_loc <- system("git rev-parse --show-toplevel", intern=TRUE)
+> single_column <- FALSE # Just so initialize can load.
+> source(file.path(git_repo_loc, "writing/R_scripts/initialize.R"))
+
+Attaching package: ‘gridExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    combine
+
+> 
+> output_path <- file.path(data_path, "synthetic")
+> 
+> synth_results <- rbind(
++   read.delim(
++     file.path(data_path, "synthetic/synthetic_cv_SyntheticLogistic_N=1000_D=100.txt"),
++     sep="", header=FALSE) %>%
++     mutate(model="logistic"),
++   read.delim(
++     file.path(data_path, "synthetic/synthetic_cv_SyntheticPoisson_N=1000_D=100.txt"),
++     sep="", header=FALSE) %>%
++     mutate(model="poisson"),
++   read.delim(
++     file.path(data_path, "synthetic/synthetic_cv_SyntheticProbit_N=1000_D=100.txt"),
++     sep="", header=FALSE) %>%
++     mutate(model="probit")
++ )
+> 
+> # I have it on good faith that these are the column names.
+> names(synth_results)[1:4] <- c("train_error", "test_error", "exact_cv", "approx_cv")
+> stopifnot(unique(table(synth_results$ind)) == 3) # sanity check
+> 
+> synth_results_graph <-
++   arrange(synth_results, test_error) %>%
++   group_by(model) %>%
++   mutate(ind=1:n()) %>%
++   melt(id.vars=c("model", "ind"))
+> 
+> ggplot(synth_results_graph) +
++   geom_line(aes(x=ind, y=value, color=variable)) +
++   facet_grid(~ model, scales="free")
+> 
+> ################
+> 
+> MakeMethodRow <- function(method, method_legend) {
++   data.frame(method=method, method_legend=method_legend)
++ }
+> unique(synth_results_graph$variable)
+[1] train_error test_error  exact_cv    approx_cv  
+Levels: train_error test_error exact_cv approx_cv
+> synth_method_legend <- rbind(
++   MakeMethodRow("train_error", "Training error"),
++   MakeMethodRow("exact_cv", "Exact CV"),
++   #MakeMethodRow("approx_cv", "Approximate CV")
++   MakeMethodRow("approx_cv", "IJ")
++ )
+> 
+> 
+> MakeModelRow <- function(model, model_legend) {
++   data.frame(model=model, model_legend=model_legend)
++ }
+> unique(synth_results_graph$model)
+[1] "probit"   "logistic" "poisson" 
+> synth_model_legend <- rbind(
++   MakeModelRow("probit", "Probit regression"),
++   MakeModelRow("logistic", "Logistic regression"),
++   MakeModelRow("poisson", "Poisson regression")
++ )
+> 
+> synth_results_diff <-
++   inner_join(filter(synth_results_graph, variable  != "test_error"),
++              filter(synth_results_graph, variable == "test_error"),
++              by=c("ind", "model"), suffix=c("", "_test")) %>%
++   mutate(diff = value - value_test) %>%
++   dcast(model + ind ~ variable, value.var="diff") %>%
++   arrange(train_error) %>%
++   ungroup() %>% group_by(model) %>%
++   mutate(ind=1:n()) %>%
++   melt(id.vars=c("model", "ind")) %>%
++   rename(method=variable) %>%
++   filter(model != "probit") %>%
++   inner_join(synth_method_legend, by="method") %>%
++   inner_join(synth_model_legend, by="model")
+Warning message:
+Column `model` joining character vector and factor, coercing into character vector 
+> head(synth_results_diff)
+    model ind      method      value  method_legend       model_legend
+1 poisson   1 train_error -0.4016211 Training error Poisson regression
+2 poisson   2 train_error -0.3821707 Training error Poisson regression
+3 poisson   3 train_error -0.3668558 Training error Poisson regression
+4 poisson   4 train_error -0.3577894 Training error Poisson regression
+5 poisson   5 train_error -0.3338466 Training error Poisson regression
+6 poisson   6 train_error -0.3302186 Training error Poisson regression
+> 
+> # keep synth_results_diff
+> 
+> ggplot(synth_results_diff) +
++   geom_line(aes(x=ind, y=value, color=method_legend, linetype=method_legend), lwd=1) +
++   geom_hline(aes(yintercept=0)) +
++   xlab("Trial number, sorted by training set error difference") +
++   ylab("Difference from test set error") +
++   facet_grid(~ model_legend, scales="free") +
++   guides(color=guide_legend(title=NULL)) +
++   guides(linetype=guide_legend(title=NULL))
+> 
+> 
+> 
+> ###############
+> # Timing plot
+> 
+> MakeTimingMethodRow <- function(variable, variable_legend) {
++   data.frame(variable=variable, variable_legend=variable_legend)
++ }
+> timing_method_legend <- rbind(
++   MakeTimingMethodRow("exact_runtime", "Exact CV"),
++   # MakeTimingMethodRow("approx_runtime", "Approximate CV"),
++   MakeTimingMethodRow("approx_runtime", "IJ"),
++   MakeTimingMethodRow("linear_scaling", "Linear scaling\n(for reference)")
++ )
+> 
+> 
+> timings <- read.delim(
++   file.path(data_path, "synthetic/synthetic_timings.txt"),
++   sep="", header=FALSE)
+> 
+> # Educated guess
+> colnames(timings) <- c("data_size", "exact_runtime", "approx_runtime")
+> timings_graph <-
++   melt(timings, id.vars="data_size")
+> ggplot(timings_graph) +
++   geom_point(aes(x=data_size, y=value, color=variable)) +
++   geom_line(aes(x=data_size, y=value, color=variable))
+> 
+> timings_graph_filter <- filter(timings_graph, data_size > 1000)
+> min_data_size <- min(timings_graph_filter$data)
+> target_intercept <-
++   log10(min(filter(timings_graph_filter, data_size == min_data_size)$value)) - 1
+> straight_line_intercept <- target_intercept - log10(min(timings_graph_filter$data))
+> 
+> timings_graph_scaling <-
++   dcast(timings_graph_filter, data_size ~ variable, value.var="value") %>%
++   mutate(linear_scaling=10 ^(straight_line_intercept) * data_size) %>%
++   melt(id.vars="data_size") %>%
++   inner_join(timing_method_legend, by="variable")
+> #timings_graph_scaling
+> 
+> ggplot(timings_graph_scaling) +
++   geom_line(aes(x=log10(data_size), y=log10(value), color=variable_legend, linetype=variable_legend), lwd=1) +
++   guides(color=guide_legend(title=NULL)) +
++   guides(linetype=guide_legend(title=NULL)) +
++   xlab("Log10(data size)") + ylab("Log10(Runtime)")
+> 
+> summary(lm(log10(exact_runtime) ~ log10(data_size), filter(timings, data_size > 1000)))
+
+Call:
+lm(formula = log10(exact_runtime) ~ log10(data_size), data = filter(timings, 
+    data_size > 1000))
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.047733 -0.035636  0.001929  0.019160  0.065184 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      -3.95919    0.15951  -24.82 2.81e-07 ***
+log10(data_size)  1.67819    0.03823   43.89 9.36e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.04415 on 6 degrees of freedom
+Multiple R-squared:  0.9969,	Adjusted R-squared:  0.9964 
+F-statistic:  1927 on 1 and 6 DF,  p-value: 9.363e-09
+
+> summary(lm(log10(approx_runtime) ~ log10(data_size), filter(timings, data_size > 1000)))
+
+Call:
+lm(formula = log10(approx_runtime) ~ log10(data_size), data = filter(timings, 
+    data_size > 1000))
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.03646 -0.02696 -0.01513  0.01069  0.07947 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(>|t|)    
+(Intercept)      -2.76435    0.16336  -16.92 2.72e-06 ***
+log10(data_size)  1.19521    0.03916   30.52 8.21e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.04521 on 6 degrees of freedom
+Multiple R-squared:  0.9936,	Adjusted R-squared:  0.9925 
+F-statistic: 931.7 on 1 and 6 DF,  p-value: 8.206e-08
+
+> 
+> 
+> 
+> ###########################
+> # Save results
+> 
+> save(timings_graph_scaling, synth_results_diff, file=file.path(output_path, "synthetic_results.Rdata"))
+> 
+> 
+> 
+> 
+> 
+> #################
+> # Graphs what is not so good all right:
+> 
+> synth_results_diff <-
++   inner_join(filter(synth_results_graph, variable  != "test_error"),
++              filter(synth_results_graph, variable == "test_error"),
++              by=c("ind", "model"), suffix=c("", "_test")) %>%
++   mutate(diff = value - value_test) %>%
++   dcast(ind + model ~ variable, value.var="diff")
+> head(synth_results_diff)
+  ind    model train_error    exact_cv   approx_cv
+1   1 logistic  -0.0739000 -0.00690000 -0.02490000
+2   1  poisson  -0.2963677 -0.06328393 -0.10107356
+3   1   probit  -0.0226500  0.02835000  0.02235000
+4   2 logistic  -0.0580000 -0.00100000 -0.01000000
+5   2  poisson  -0.2757112 -0.04364222 -0.07907875
+6   2   probit  -0.0442000  0.00380000 -0.00420000
+> 
+> ymin <- min(synth_results_diff$approx_cv)
+> ymax <- max(synth_results_diff$approx_cv)
+> 
+> xmin <- min(c(synth_results_diff$exact_cv, synth_results_diff$train_error))
+> xmax <- max(c(synth_results_diff$exact_cv, synth_results_diff$train_error))
+> 
+> grid.arrange(
++   ggplot(synth_results_diff) +
++     geom_point(aes(x=exact_cv, y=approx_cv)) +
++     geom_abline(aes(slope=1, intercept=0)) +
++     xlim(xmin, xmax) +
++     ylim(ymin, ymax) +
++     facet_grid(model ~ .)
++   ,
++   ggplot(synth_results_diff) +
++     geom_point(aes(x=train_error, y=approx_cv)) +
++     geom_abline(aes(slope=1, intercept=0)) +
++     xlim(xmin, xmax) +
++     ylim(ymin, ymax) +
++     facet_grid(model ~ .)
++   , ncol=2
++ )
+> 
+> proc.time()
+   user  system elapsed 
+  3.416   0.052   3.461 

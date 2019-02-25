@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Methods and Results}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Problem definition}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Linear approximation}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Assumptions and results}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Examples}{}% 6
+\BOOKMARK [1][-]{section.4}{Related Work}{}% 7
+\BOOKMARK [1][-]{section.5}{Simulated Experiments}{}% 8
+\BOOKMARK [1][-]{section.6}{Genomics Experiments}{}% 9
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 10
+\BOOKMARK [1][-]{appendix.A}{Detailed assumptions, lemmas, and proofs}{}% 11
+\BOOKMARK [2][-]{subsection.A.1}{Tools}{appendix.A}% 12
+\BOOKMARK [2][-]{subsection.A.2}{Lemmas}{appendix.A}% 13
+\BOOKMARK [2][-]{subsection.A.3}{Bounding the errors in a Taylor expansion}{appendix.A}% 14
+\BOOKMARK [2][-]{subsection.A.4}{Use cases}{appendix.A}% 15
+\BOOKMARK [1][-]{appendix.B}{Genomics Experiments Details}{}% 16

@@ -1,0 +1,263 @@
+
+We now state our key assumptions and results, which are sufficient conditions
+under which $\thetaij(w)$ will be a good approximation to $\thetapw$. We defer
+most proofs to \appsect{appendix_proofs}. We use $\norm{\cdot}_{op}$
+to denote the matrix operator norm, $\norm{\cdot}_{2}$ to denote the $L_{2}$
+norm, and $\norm{\cdot}_{1}$ to denote the $L_{1}$ norm. For quantities like $g$
+and $h$, which have dimensions $N\times D$ and $N\times D\times D$ respectively,
+we apply the $L_p$ norm to the vectorized version of arrays.
+%
+For example,
+$\frac{1}{\sqrt{N}} \norm{h\left(\theta\right)}_{2} =
+\sqrt{
+\frac{1}{N}\sum_{n=1}^{N}\sum_{i=1}^{D}\sum_{j=1}^{D}
+\left[h_{n}\left(\theta\right)\right]_{ij}^{2}
+}$ which is the square root of a sample average over $n\in[N]$.
+
+We state all assumptions and results for a fixed $N$, a given estimating
+equation vector $g\left(\theta\right)$, and a fixed class of weights $W$.
+Although our analysis proceeds
+with these quantities fixed, we are careful to make only assumptions that can
+plausibly hold for all $N$ and/or for randomly chosen $W$
+under appropriate regularity conditions.
+%
+\begin{assumption}[Smoothness] \label{assu:paper_smoothness}
+For all $\theta\in\Omega_{\theta}$, each $g_{n}\left(\theta\right)$
+is continuously differentiable in $\theta$.
+\end{assumption}
+%
+The smoothness in \assuref{paper_smoothness} is necessary
+for a local approximation like \defrefref{ij_definition} to have
+any hope of being useful.
+%
+\begin{assumption}[Non-degeneracy]
+\label{assu:paper_hessian}
+For all $\theta\in\Omega_{\theta}$, $H\left(\theta,\onevec\right)$
+is non-singular, with
+$\sup_{\theta\in\Omega_{\theta}}\norm{H\left(\theta,\onevec\right)^{-1}}_{op}
+\le\constop < \infty$.
+\end{assumption}
+%
+Without \assuref{paper_hessian}, the derivative in \defrefref{ij_definition}
+would not exist. For an optimization problem, \defrefref{ij_definition} amounts
+to assuming that the Hessian is strongly positive definite, and, in general,
+assures that the solution $\thetaone$ is unique.  Under our assumptions, we will
+show later that, additionally, $\thetapw$ is unique in a neighborhood of
+$\thetaone$; see \lemref{continuous_invertibility} of \appsect{appendix_proofs}.
+Furthermore, by fixing $\constop$, if we want to apply \assuref{paper_hessian}
+for $N\rightarrow\infty$, we will require that $\hone$ remains strongly positive
+definite.
+
+%
+\begin{assumption}[Bounded averages] \label{assu:paper_bounded}
+There exist finite constants $\constg$ and $\consth$ such that
+$\sup_{\theta\in\Omega_{\theta}}
+    \frac{1}{\sqrt{N}} \norm{g\left(\theta\right)}_{2}\le\constg<\infty
+\quad\textrm{and}\quad
+\sup_{\theta\in\Omega_{\theta}}
+    \frac{1}{\sqrt{N}} \norm{h\left(\theta\right)}_{2} \le\consth<\infty$.
+\end{assumption}
+%
+\assuref{paper_bounded} essentially states that the sample variances of the
+gradients and Hessians are uniformly bounded. Note that it does not require that
+these quantities are bounded term-wise. For example, we allow
+$\sup_{n}\norm{g_{n}\left(\theta\right)}_2^2
+\underset{N\rightarrow\infty}{\longrightarrow}\infty$, as long as
+$\sup_{n}\frac{1}{N}\norm{g_{n}\left(\theta\right)}^{2}_2$ remains bounded. This
+is a key advantage of the present work over many past applications of the IJ to
+M-estimation, which require $\sup_n \norm{g_n(\theta)}_2^2$ to be uniformly
+bounded for all $N$ \citep{shao:2012:jackknife, BeiramiRST17}.
+
+In both machine learning and
+statistics, $\sup_n\norm{g_n(\theta)}_2^2$ is rarely bounded, though
+$\frac{1}{N}\norm{g(\theta)}_2^2$ often is.  As a simple example, suppose
+that $\theta \in \mathbb{R}^1$, $x_n \sim \mathcal{N}(0, 1)$, and
+$g_n = \theta - x_n$, as would arise from the squared error loss
+$f_n\left(x_n, \theta\right) = \frac{1}{2}\left(\theta - x_n\right)^2$.
+Fix a $\theta$ and let $N \rightarrow \infty$.  Then
+$\sup_n\norm{g_n(\theta)}_2^2 \rightarrow \infty$ because
+$\sup_n |x_n| \rightarrow \infty$, but
+$\frac{1}{N}\norm{g(\theta)}_2^2 \rightarrow \theta^2 + 1$ by the law of
+large numbers.
+%
+\begin{assumption}[Local smoothness] \label{assu:paper_lipschitz}
+There exists a $\thetasize>0$ and a finite constant $\liph$ such that,
+$\norm{\theta-\thetaone}_{2} \le \thetasize$ implies that
+$\frac{\norm{h\left(\theta\right)-h\left(\thetaone\right)}_{2}}
+    {\sqrt{N}}\le\liph\norm{\theta-\thetaone}_{2}$.
+\end{assumption}
+%
+The constants defined in \assuref{paper_lipschitz} are needed to calculate
+our error bounds explicitly.
+
+\coreassum are quite general and should be expected to hold for many reasonable
+problems, including holding uniformly asymptotically with high probability for
+many reasonable data-generating distributions, as the following lemma shows.
+%
+\begin{lem}[The assumptions hold under uniform convergence]
+\label{lem:assumptions_hold}
+%
+Let $\Omega_{\theta}$ be a compact set, and let
+$g_{n}\left(\theta\right)$ be twice continuously differentiable IID random
+functions for $n \in [N]$.  (The function is random but $\theta$ is not---for example,
+$\mbe\left[g_n(\theta)\right]$ is still a function of $\theta$.)
+Define
+$r_{n}\left(\theta\right) :=
+    \frac{\partial^{2}g{}_{n}\left(\theta\right)}
+    {\partial\theta\partial\theta}$,
+so $r_{n}\left(\theta\right)$ is a $D\times D\times D$ tensor.
+
+Assume that we can exchange integration and differentiation, that
+$\mbe\left[h_{n}\left(\theta\right)\right]$ is non-singular for
+all $\theta\in\Omega_{\theta}$,
+and that all of
+$\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]$,
+$\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{h_{n}\left(\theta\right)}_{2}^{2}\right]$,
+and
+$\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]$
+are finite.
+
+Then $\lim_{N\rightarrow\infty}P\left(\textrm{\coreassum\ hold}\right)=1$.
+%
+\end{lem}
+%
+\lemref{assumptions_hold} follows from
+the uniform convergence results of Theorems 9.1 and 9.2 in
+\citet{keener:2011:theoretical}.
+See \appsect{use_cases} for a detailed proof.  A common example to which
+\lemref{assumptions_hold} would apply is where $x_n$ are well-behaved
+IID data and $g_n(\theta) = \gamma(x_n, \theta)$ for an appropriately
+smooth estimating function $\gamma(\cdot, \theta)$.
+See \citet[Chapter 9]{keener:2011:theoretical} for more details and examples,
+including applications to maximum likelihood estimators on unbounded domains.
+
+\coreassum apply to the estimating equation.  We also require
+a boundedness condition for $W$.
+%
+\begin{assumption}[Bounded weight averages] \label{assu:paper_weight_bounded}
+The quantity
+$\frac{1}{\sqrt{N}}\norm w_{2}$ is uniformly bounded for $w\in W$ by a finite
+constant $\constw$.
+\end{assumption}
+%
+Our final requirement is considerably more restrictive, and
+contains the essence of whether or not $\thetaij(w)$ will be a good approximation
+to $\thetapw$.
+%
+\begin{condition}[Set complexity]
+    %
+\label{cond:paper_uniform_bound}There exists a $\delta\ge0$ and
+a corresponding set $W_{\delta}\subseteq W$ such that
+%
+\begin{align*}
+\sup_{w\in W_{\delta}}\sup_{
+    \theta\in\Omega_{\theta}} &\norm{\frac{1}{N}\sum_{n=1}^{N}
+    \left(w_{n}-1\right)g_{n}\left(\theta\right)}_{1}  \le\delta
+\quad\textrm{and} \\
+\sup_{w\in W_{\delta}}\sup_{
+    \theta\in\Omega_{\theta}} &\norm{\frac{1}{N}\sum_{n=1}^{N}
+    \left(w_{n}-1\right)h_{n}\left(\theta\right)}_{1}  \le\delta.
+\end{align*}
+\end{condition}
+%
+\condref{paper_uniform_bound} is central to establishing when the approximation
+$\thetaij\left(w\right)$ is accurate. For a given $\delta$, $W_{\delta}$ will be
+the class of weight vectors for which $\thetaij(w)$ is accurate to within order
+$\delta$. Trivially, $\onevec\in W_{\delta}$ for $\delta=0$, so $W_{\delta}$ is
+always non-empty, even for arbitrarily small $\delta$. The trick will be to
+choose a small $\delta$ that still admits a large class $W_{\delta}$ of weight
+vectors. In \sect{methods_examples} we will discuss
+\condref{paper_uniform_bound} in more depth, but it will help to first state our
+main theorem.
+%
+\begin{defn}
+\label{defref:constants_definition}  The following constants are given by
+quantities in \paperallcoreassum.
+\begin{align*}
+    \constij &:= 1+D \constw \liph \constop \\
+    \deltasize &:=
+        \min\left\{ \thetasize\constop[-1],
+                    \frac{1}{2}\constij^{-1}\constop[-1]\right\}.
+\end{align*}
+\end{defn}
+%
+Note that, although the parameter dimension $D$ occurs explicitly only once in
+\defrefref{constants_definition}, all of $\constw$, $\constop$, and $\liph$ in
+general might also contain dimension dependence. Additionally, the bound
+$\delta$ in \condref{paper_uniform_bound}, a measure of the set complexity of
+the parameters, will typically depend on dimension. However, the particular
+place where the parameter dimension enters will depend on the problem and
+asymptotic regime, and our goal is to provide an adaptable toolkit for a wide
+variety of problems.
+
+We are now ready to state our main result.
+%
+\begin{thm}[Error bound for the approximation]
+\label{thmref:paper_ij_error}Under
+\paperallcoreassum and \condref{paper_uniform_bound},
+\begin{align*}
+\delta\le \deltasize \Rightarrow
+\max_{w\in W_{\delta}}\norm{\thetaij\left(w\right)-{\thetapw}}_{2}
+    \le 2 \constop[2] \constij \delta^{2}.
+\end{align*}
+\end{thm}
+%
+We stress that \thmrefref{paper_ij_error} bounds only the difference between
+$\thetaij(w)$ and $\thetapw$.  \thmrefref{paper_ij_error} alone does not
+guarantee that $\thetaij(w)$ converges to any hypothetical infinite population
+quantity. We see this as a strength, not a weakness.  To begin with, convergence
+to an infinite population requires stronger assumptions.  Contrast, for example,
+the Fr{\'e}chet differentiability work of \citet{clarke:1983:uniqueness}, on which
+our work is based, with the stricter requirements in the proof of consistency in
+\cite{shao:1993:jackknifemestimator}.  Second, machine learning problems may not
+naturally admit a well-defined infinite population, and the dataset at hand may
+be of primary interest. Finally, by  analyzing a particular sample rather than a
+hypothetical infinite population, we can bound the error in terms of the
+quantities $\constij$ and $\deltasize$, which can actually be calculated from the
+data at hand.
+
+Still, \thmrefref{paper_ij_error} is useful to prove asymptotic
+results about the difference $\norm{\thetaij\left(w\right)-{\thetapw}}_{2}$.
+As an illustration, we now show that the uniform consistency of leave-$k$-out
+CV follows from \thmrefref{paper_ij_error} by a straightforward
+application of H{\"o}lder's inequality.
+%
+\begin{cor}[Consistency for leave-$k$-out CV]
+\label{cor:paper_k_means_consistent}
+Assume that \paperallcoreassum hold uniformly for all $N$. Fix an integer
+$k$, and let
+%
+$$
+W_{k}:=\left\{ w:w_{n}=0\textrm{ in }k\textrm{ entries and }1\textrm{ otherwise}\right\} .
+$$
+%
+Then, for all $N$, there exists a constant $C_K$ such that
+\begin{align*}
+\sup_{w\in W_{k}}\norm{\thetaij\left(w\right)-{\thetapw}}_{2}
+    & \le C_K \frac{\norm g_{\infty}^2}{N^2} \\
+    & \le C_K \frac{\max\left\{\constg, \consth\right\}^2}{N}.
+\end{align*}
+\end{cor}
+%
+\begin{proof}
+For $w\in W_{k}$, $\frac{\norm{\wdiff}_{2}}{\sqrt{N}}=\sqrt{\frac{K}{N}}.$
+Define $C_{gh} := \max\left\{\constg, \consth\right\}$.
+By \assuref{paper_bounded},
+$\norm g_{2}/\sqrt{N}\le C_{gh}$ and $\norm h_{2}/\sqrt{N}\le C_{gh}$
+for all $N$. By H{\"o}lder's inequality,
+\begin{align*}
+\lefteqn{ \sup_{w\in W}\sup_{\theta\in\Omega_{\theta}}
+    \norm{\frac{1}{N}\sum_{n=1}^{N}\left(w_{n}-1\right)g_{n}
+        \left(\theta\right)}_{1} } \\
+    & \le \sup_{w\in W} \norm{w - \onevec}_1
+    	\sup_{\theta\in\Omega_{\theta}} \frac{\norm g_{\infty}}{N}
+    =
+    	K \frac{\norm g_{\infty}}{N} \le
+    	K \frac{C_{gh}}{\sqrt{N}},
+\end{align*}
+with a similar bound for $\norm h_{2}$. Consequently, for $N$ large
+enough, \condref{paper_uniform_bound} is satisfied with $W_{\delta}=W_{k}$
+and either $\delta=K \frac{\norm g_{\infty}}{N}$
+or $\delta=K \frac{C_{gh}}{\sqrt{N}}$.
+The result then follows from \thmrefref{paper_ij_error}.
+\end{proof}

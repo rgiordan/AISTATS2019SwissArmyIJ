@@ -1,0 +1,57 @@
+Although the idea of forming a linear approximation to the re-weighting of an
+M-estimator has a long history, we nevertheless contribute in a number of ways.
+By limiting ourselves to approximating the exact reweighting on a particular
+dataset, we both loosen the strict requirements from the statistical literature
+and generalize the existing results from the machine learning literature.
+
+The jackknife is often favored over the IJ in the
+statistics literature because of the former's simple computational approach, as
+well as perceived difficulties in calculating the necessary derivatives when
+some of the parameters are implicitly defined via optimization
+\citep[Chapter 2.1]{shao:2012:jackknife}
+(though exceptions exist; see, e.g., \citet{wager:2014:confidence}).
+The brute-force
+approach of the jackknife is, however, a liability in large-scale machine
+learning problems, which are generally extremely expensive to re-optimize.
+Furthermore, and critically, the complexity and tedium of calculating the
+necessary derivatives is entirely eliminated by modern automatic differentiation
+\citep{baydin:2015:automatic, maclaurin:2015:autograd}.
+
+Our work is based on the proof of the Fr{\'e}chet differentiability of
+M-estimators of \citet{clarke:1983:uniqueness}. In classical statistics,
+Fr{\'e}chet differentiability is typically used to describe the asymptotic
+behavior of functionals of the empirical distribution in terms of a functional
+\citep{mises:1947:asymptotic,fernholz:1983:mises}. Since
+\citet{clarke:1983:uniqueness} was motivated by such asymptotic questions, he
+studied the Fr{\'e}chet derivative evaluated at a continuous probability
+distribution for function classes that included delta functions. This focus led
+to the requirement of a bounded gradient.  However, unbounded gradients are
+ubiquitous in both statistics and machine learning, and an essential
+contribution of the current paper is to remove the need for bounded gradients.
+
+There exist proofs of the consistency of the (non-infinitesimal) jackknife that
+allow for unbounded gradients.  For example, it is possible that the proofs of
+\citet{reeds:1978:jackknifing}, which require a smoothness assumption similar to
+our \assuref{paper_lipschitz}, could be adapted to the IJ.
+However, the results of \citet{reeds:1978:jackknifing}---as well as those of
+\citet{clarke:1983:uniqueness} and subsequent applications such as those of
+\citet{shao:2012:jackknife}---are asymptotic and applicable only to IID data. By
+providing finite sample results for a fixed dataset and weight set, we are able
+to provide a template for proving accuracy bounds for more generic probability
+distributions and re-weighting schemes.
+
+A number of recent machine learning papers have derived approximate linear
+versions of leave-one-out estimators.  \citet{KohL17} consider approximating the
+effect of leaving out one observation at a time to discover influential
+observations and construct adversarial examples, but provide little supporting
+theory. \citet{BeiramiRST17} provide rigorous proofs for an approximate
+leave-one-out CV estimator; however, their estimator requires computing a new
+inverse Hessian for each new weight at the cost of a considerable increase in
+computational complexity.  Like the classical statistics literature,
+\citet{BeiramiRST17} assume that the gradients are bounded for all $N$.  When
+$\norm g_{\infty}^2$ in \corollary{paper_k_means_consistent} is finite for all
+$N$, we achieve the same $N^{-2}$ rate claimed by \citet{BeiramiRST17} for
+leave-one-out CV although we use only a single matrix inverse. \citet{RadM18}
+also approximate leave-one-out CV, and prove tighter bounds for the error of
+their approximation than we do, but their work is customized to leave-one-out CV
+and makes much more restrictive assumptions (e.g., Gaussianity).

@@ -1,0 +1,72 @@
+
+The main problem we solve is the computational expense involved in evaluating
+$\thetapw$ for all the $w\in W$. Our contribution is to use only quantities
+calculated from $\thetaone$ to approximate $\thetapw$ for all $w\in W$, without
+re-solving \eqref{estimating_equation}. Our approximation is based on the
+derivative $\frac{d\thetapw}{dw^{T}}$, whose existence depends on the
+derivatives of $g_{n}\left(\theta\right)$, which we assume to exist, and which
+we denote as $h_{n}\left(\theta\right):=\frac{\partial
+g_{n}\left(\theta\right)}{\partial\theta^{T}}$. We use this notation because
+$h_{n}\left(\theta\right)$ would be the Hessian of a term of the objective in
+the case of an optimization problem. We make the following definition for
+brevity.
+%
+\begin{defn}
+The fixed point equation and its derivative are given respectively by
+%
+\begin{align*}
+G\left(\theta,w\right) &:=
+    \frac{1}{N}\sum_{n=1}^{N}w_{n}g_{n}\left(\theta\right) \\
+H\left(\theta,w\right) &:=
+    \frac{1}{N}\sum_{n=1}^{N}w_{n}h_{n}\left(\theta\right).
+\end{align*}
+%
+\end{defn}
+%
+Note that $G\left(\thetapw,w\right)=0$ because $\thetapw$ solves
+\eqref{estimating_equation} for $w$. We define
+$\hone:=H\left(\thetaone,\onevec\right)$ and define the weight difference as
+$\wdiff=w-\onevec\in\mathbb{R}^{N}$. When $\hone$ is invertible, one can use the
+implicit function theorem and the chain rule to show that the derivative of
+$\thetapw$ with respect to $w$ is given by
+%
+\begin{align*}
+\frac{d\thetapw}{dw^{T}}\at{\onevec}\wdiff & =
+    -\hone^{-1}\frac{1}{N}\sum_{n=1}^{N}g_{n}
+    \left(\thetaone\right)\wdiff \\
+    & =-\hone^{-1}G\left(\thetaone,\wdiff\right).
+\end{align*}
+%
+This derivative allows us to form a first-order approximation to $\thetapw$
+at $\thetaone$.
+%
+\begin{defn}
+\label{defref:ij_definition}Our linear approximation to $\thetapw$
+is given by
+%
+\begin{align*}
+\thetaij\left(w\right) & :=\thetaone-\hone^{-1}G\left(\thetaone,\wdiff\right).
+\end{align*}
+\end{defn}
+%
+We use the subscript ``IJ'' for ``infinitesimal jackknife,'' which is the name
+for this estimate in the statistics literature
+\citep{jaeckel:1972:infinitesimal,shao:1993:jackknifemestimator}. Because
+$\thetaij$ depends only on $\thetaone$ and $\wdiff$, and not on
+solutions at any other values of $w$, there is no
+need to re-solve \eqref{estimating_equation}. Instead, to calculate $\thetaij$
+one must solve a linear system involving $\hone$. Recalling that $\theta$ is
+$D$-dimensional, the calculation of $\hone^{-1}$ (or a factorization that
+supports efficient solution of linear systems) can be $O\left(D^{3}\right)$.
+However, once $\hone^{-1}$ is calculated or $\hone$ is factorized, calculating our approximation
+$\thetaij\left(w\right)$ for each new weight costs only as
+much as a single matrix-vector multiplication. Furthermore, $\hone$ often has a
+sparse structure allowing $\hone^{-1}$ to be calculated more efficiently than a
+worst-case scenario (see \sect{genomics} for an example). In more
+high-dimensional examples with dense Hessian matrices, such as neural networks,
+one may need to turn to approximations such as stochastic second-order methods
+\citep{KohL17, agarwal:2016:lissa} and conjugate gradient
+\citep{wright:1999:optimization}. Indeed, even in relatively small or sparse
+problems, the vast bulk of the computation required to calculate $\thetaij$ is
+in the computation of $\hone^{-1}$. We leave the important question of
+approximate calculation of $\hone^{-1}$ for future work.

@@ -1,0 +1,208 @@
+
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # This script post-processes the output of
+> # InfinitesimalJackknifeGenomicsExperiment/examine_and_save_results.ipynb,
+> # and produces the file genomics_data_for_paper.Rdata, which is used, per its name,
+> # for the graphs in the actual paper.
+> #
+> # We assume that the Rdata file produced by examine_and_save_results.ipynb is linked to
+> # in ``genomics_data_path``.  This Rdata file should contain the following objects:
+> #
+> # refit_err_summary
+> # metadata_df
+> # diff_corr
+> # err_corr
+> 
+> library(tidyverse)
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+✔ tibble  1.4.2     ✔ dplyr   0.7.8
+✔ tidyr   0.8.1     ✔ stringr 1.3.1
+✔ readr   1.1.1     ✔ forcats 0.3.0
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+> 
+> setwd("/home/rgiordan/Documents/git_repos/AISTATS2019SwissArmyIJ/writing/R_scripts")
+> git_repo_loc <- system("git rev-parse --show-toplevel", intern=TRUE)
+> knitr_debug <- FALSE
+> single_column <- TRUE
+> source(file.path(git_repo_loc, "writing/R_scripts/initialize.R"))
+
+Attaching package: ‘reshape2’
+
+The following object is masked from ‘package:tidyr’:
+
+    smiths
+
+
+Attaching package: ‘gridExtra’
+
+The following object is masked from ‘package:dplyr’:
+
+    combine
+
+> genomics_data_path <- file.path(data_path, "genomics/")
+> 
+> load(file.path(genomics_data_path, "paper_results_init_kmeans_rereg_FALSE.Rdata"))
+> 
+> 
+> ####################################################################
+> # Make the plot comparing the errors for different k and df.
+> 
+> head(refit_err_summary)
+# A tibble: 6 x 9
+# Groups:   output, df [2]
+  output          df lo_num_times   med  mean  n_obs      se  qlow qhigh
+  <chr>        <int>        <int> <dbl> <dbl>  <int>   <dbl> <dbl> <dbl>
+1 cv_in_sample     4            1 0.360 0.497  14700 0.00396 0.162 0.670
+2 cv_in_sample     4            2 0.362 0.497  88200 0.00160 0.166 0.671
+3 cv_in_sample     4            3 0.364 0.499 220500 0.00102 0.166 0.677
+4 cv_in_sample     5            1 0.336 0.493  14700 0.00412 0.152 0.651
+5 cv_in_sample     5            2 0.335 0.491  88200 0.00168 0.150 0.655
+6 cv_in_sample     5            3 0.340 0.492 220500 0.00105 0.153 0.658
+> 
+> MakeKLabel <- function(k) { return(data.frame(lo_num_times=k, k_label=sprintf("K = %d", k))) }
+> k_label_df <- do.call(rbind, lapply(unique(refit_err_summary$lo_num_times), MakeKLabel))
+> 
+> MakeDFLabel <- function(df) { return(data.frame(df=df, df_label=sprintf("df = %d", df)))}
+> df_label_df <- do.call(rbind, lapply(unique(refit_err_summary$df), MakeDFLabel))
+> 
+> MakeMethodLabel <- function(method, method_label) {
++   return(data.frame(output=method, method_label=method_label))
++ }
+> unique(refit_err_summary$output)
+[1] "cv_in_sample"  "lin_in_sample" "test_error"    "train_error"  
+> method_label_df <- rbind(
++   MakeMethodLabel("cv_in_sample", "Exact CV"),
++   #MakeMethodLabel("lin_in_sample", "Approximate CV"),
++   MakeMethodLabel("lin_in_sample", "IJ"),
++   MakeMethodLabel("test_error", "Test error"),
++   MakeMethodLabel("train_error", "Training error")
++ )
+> 
+> mse_summary_df <-
++   refit_err_summary %>%
++   inner_join(method_label_df, by="output") %>%
++   inner_join(k_label_df, by="lo_num_times") %>%
++   inner_join(df_label_df, by="df")
+Warning message:
+Column `output` joining character vector and factor, coercing into character vector 
+> 
+> head(mse_summary_df)
+# A tibble: 6 x 12
+# Groups:   output, df [2]
+  output    df lo_num_times   med  mean  n_obs      se  qlow qhigh method_label
+  <chr>  <int>        <int> <dbl> <dbl>  <int>   <dbl> <dbl> <dbl> <fct>       
+1 cv_in…     4            1 0.360 0.497  14700 0.00396 0.162 0.670 Exact CV    
+2 cv_in…     4            2 0.362 0.497  88200 0.00160 0.166 0.671 Exact CV    
+3 cv_in…     4            3 0.364 0.499 220500 0.00102 0.166 0.677 Exact CV    
+4 cv_in…     5            1 0.336 0.493  14700 0.00412 0.152 0.651 Exact CV    
+5 cv_in…     5            2 0.335 0.491  88200 0.00168 0.150 0.655 Exact CV    
+6 cv_in…     5            3 0.340 0.492 220500 0.00105 0.153 0.658 Exact CV    
+# ... with 2 more variables: k_label <fct>, df_label <fct>
+> 
+> ggplot(mse_summary_df) +
++   geom_ribbon(aes(x=df, ymin=mean - 2 * se, ymax=mean + 2 * se, fill=method_label), alpha=0.2) +
++   geom_point(aes(x=df, y=mean, color=method_label)) +
++   geom_line(aes(x=df, y=mean, color=method_label)) +
++   facet_grid(. ~ k_label, scales="free") +
++   xlab("Degrees of freedom") +
++   ylab("Mean squared error on held out timepoints") +
++   theme(legend.title=element_blank())
+> 
+> 
+> #######################
+> # Timing results
+> 
+> # approx_cv_label <- "Approximate CV"
+> approx_cv_label <- "IJ"
+> exact_cv_label <- "Exact CV"
+> MakeTaskLabel <- function(task, task_label) { data.frame(task=task, task_label=task_label) }
+> task_labels <- rbind(
++   MakeTaskLabel("initial_opt_time", "Initial fit"),
++   MakeTaskLabel("total_lr_time", "Matrix multiplication"),
++   MakeTaskLabel("total_ij_time", approx_cv_label),
++   MakeTaskLabel("lr_hess_time", "Calculating and inverting Hessian"),
++   MakeTaskLabel("total_refit_time", exact_cv_label)
++ )
+> 
+> timing_graph_df1 <-
++   metadata_df %>%
++   select(df, lo_num_times, total_refit_time, lr_hess_time, initial_opt_time, total_lr_time) %>%
++   mutate(total_ij_time=lr_hess_time + total_lr_time) %>%
++   select(-lr_hess_time, -total_lr_time) %>%
++   melt(id.vars=c("lo_num_times", "df"), variable.name="task") %>%
++   inner_join(task_labels, by="task") %>%
++   inner_join(k_label_df, by="lo_num_times") %>%
++   inner_join(df_label_df, by="df")
+Warning message:
+Column `task` joining factors with different levels, coercing to character vector 
+> 
+> head(timing_graph_df1)
+  lo_num_times df             task     value task_label k_label df_label
+1            1  4 total_refit_time  338.1638   Exact CV   K = 1   df = 4
+2            1  5 total_refit_time  391.6006   Exact CV   K = 1   df = 5
+3            1  6 total_refit_time  423.8322   Exact CV   K = 1   df = 6
+4            1  7 total_refit_time  632.2635   Exact CV   K = 1   df = 7
+5            1  8 total_refit_time  599.0894   Exact CV   K = 1   df = 8
+6            2  4 total_refit_time 1123.7316   Exact CV   K = 2   df = 4
+> 
+> # Because the initial fit contributes both to CV and the IJ, append
+> # the rows to both the meta tasks.
+> timing_graph_df <-
++   filter(timing_graph_df1, task %in% c("total_refit_time", "total_ij_time")) %>%
++   mutate(meta_task=task_label) %>%
++   bind_rows(
++     filter(timing_graph_df1, task %in% c("initial_opt_time")) %>%
++       mutate(meta_task=exact_cv_label)) %>%
++   bind_rows(
++     filter(timing_graph_df1, task %in% c("initial_opt_time")) %>%
++       mutate(meta_task=approx_cv_label))
+Warning messages:
+1: In bind_rows_(x, .id) :
+  binding factor and character vector, coercing into character vector
+2: In bind_rows_(x, .id) :
+  binding character and factor vector, coercing into character vector
+> 
+> ggplot(timing_graph_df) +
++   geom_bar(aes(fill=task_label, y=value, x=df, group=meta_task),
++            stat="identity", position=position_dodge()) +
++   ylab("Seconds") +
++   ggtitle("Timing comparison") +
++   theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
++   theme(legend.title=element_blank()) +
++   theme(axis.title.x=element_blank()) +
++   facet_wrap(~ paste("df = 4,...,8", k_label, sep="\t"),
++              strip.position = "bottom", scales = "free_x") +
++   theme(panel.spacing = unit(0, "lines"),
++         strip.background = element_blank(),
++         strip.placement = "outside")
+There were 12 warnings (use warnings() to see them)
+> 
+> #######################
+> # Save for the paper
+> 
+> save(timing_graph_df, mse_summary_df, metadata_df,
++      file=file.path(genomics_data_path, "genomics_data_for_paper.Rdata"))
+> 
+> proc.time()
+   user  system elapsed 
+  3.460   0.076   3.538 
