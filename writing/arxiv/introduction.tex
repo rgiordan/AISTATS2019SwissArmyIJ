@@ -1,0 +1,74 @@
+
+Statistical machine learning methods are increasingly deployed in real-world
+problem domains where they are the basis of decisions affecting individuals'
+employment, savings, health, and safety. Unavoidable randomness in data
+collection necessitates understanding how our estimates, and resulting
+decisions, might have differed had we observed different data. Both cross
+validation (CV) and the bootstrap attempt to diagnose this variation and are
+widely used in classical data analysis. But these methods are often
+prohibitively slow for modern, massive datasets, as they require running a
+learning algorithm on many slightly different datasets.  In this work, we
+propose to replace these many runs with a single perturbative approximation. We
+show that the computation of this approximation is far cheaper than the
+classical methods, and we provide theoretical conditions that establish its
+accuracy.
+
+Many data analyses proceed by minimizing a loss function of exchangeable data.
+Examples include empirical loss minimization and M-estimation based on product
+likelihoods. Since we typically do not know the true distribution generating the
+data, it is common to approximate the dependence of our estimator on the data
+via the dependence of the estimator on the empirical distribution. In
+particular, we often form a new, proxy dataset using random or deterministic
+modifications of the empirical distribution, such as randomly removing $k$
+datapoints for leave-$k$-out CV. A proxy dataset obtained in this way can be
+represented as a weighting of the original data. From a set of such proxy
+datasets we can obtain estimates of uncertainty, including estimates of bias,
+variance, and prediction accuracy.
+
+As data and models grow, the cost of repeatedly solving a large optimization
+problem for a number of different values of weights can become impractically
+large. Conversely, though, larger datasets often exhibit greater regularity; in
+particular, under fairly general conditions, limit laws based on independence
+imply that an optimum exhibits diminishing dependence on any fixed set of data
+points.  We use this observation to derive a linear approximation to resampling
+that needs to be calculated only once, but which nonetheless captures the
+variability inherent in the repeated computations of classical CV.  Our method
+is an instance of the \emph{infinitesimal jackknife} (IJ), a general methodology
+that was historically a precursor to cross-validation and the
+bootstrap~\citep{jaeckel:1972:infinitesimal, efron:1982:jackknife}. Part of our
+argument is that variants of the IJ should be reconsidered
+for modern large-scale applications because, for smooth optimization problems,
+the IJ can be calculated automatically with modern
+automatic differentiation tools \citep{baydin:2015:automatic}.
+
+By using this linear approximation, we incur the cost of forming and inverting a
+matrix of second derivatives with size equal to the dimension of the parameter
+space, but we avoid the cost of repeatedly re-optimizing the objective. As we
+demonstrate empirically, this tradeoff can be extremely favorable in many
+problems of interest.
+
+Our approach aims to provide a felicitous union of two schools of thought. In
+statistics, the IJ is typically used to prove normality or
+consistency of other estimators~\citep{
+fernholz:1983:mises,shao:1993:jackknifemestimator,shao:2012:jackknife}. However,
+the conditions that are required for these asymptotic analyses to hold are
+prohibitively restrictive for machine learning---specifically, they require
+objectives with bounded gradients. A number of recent papers in machine learning
+have provided related linear approximations for the special case of
+leave-one-out cross-validation~\citep{KohL17, RadM18, BeiramiRST17}, though
+their analyses lack the generality of the statistical perspective.
+
+We combine these two approaches by modifying the proof of the Fr{\'e}chet
+differentiability of M-estimators developed by \citet{clarke:1983:uniqueness}.
+Specifically, we adapt the proof away from the question of Fr{\'e}chet
+differentiability within the class of all empirical distributions to the
+narrower problem of approximating the exact re-weighting on a particular dataset
+with a potentially restricted set of weights.  This limitation of what we expect
+from the approximation is crucial; it allows us to bound the error in terms of a
+complexity measure of the set of derivatives of the observed objective function,
+providing a basis for non-asymptotic applications in large-scale machine
+learning, even for objectives with unbounded derivatives.  Together with modern
+automatic differentiation tools, these results extend the use of the
+IJ to a wider range of practical problems. Thus, our
+``Swiss Army infinitesimal jackknife,'' like the famous Swiss Army knife, is a
+single tool with many different functions.

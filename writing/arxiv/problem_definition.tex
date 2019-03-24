@@ -1,0 +1,66 @@
+We consider the problem of estimating an unknown parameter
+$\theta\in\Omega_{\theta}\subseteq\mathbb{R}^{D}$, with a compact
+$\Omega_{\theta}$ and a dataset of size $N$. Our analysis will proceed entirely
+in terms of a fixed dataset, though we will be careful to make assumptions that
+will plausibly hold for all $N$ under suitably well-behaved random sampling. We
+define our estimate, $\thetahat\in\Omega_{\theta}$, as the root of a weighted
+estimating equation. For each $n=1, \ldots, N$, let $g_{n}\left(\theta\right)$ be a
+function from $\Omega_{\theta}$ to $\mathbb{R}^{D}$. Let $w_{n}$ be a real
+number, and let $w$ be the vector collecting the $w_n$.
+Then $\thetahat$ is defined as the quantity that satisfies
+%
+\begin{align}
+\thetapw:= &
+    \quad\theta\textrm{ such that }
+    \frac{1}{N}\sum_{n=1}^{N}w_{n}g_{n}\left(\theta\right) = 0.
+    \label{eq:estimating_equation}
+\end{align}
+%
+We will impose assumptions below that imply at least local uniqueness of
+$\thetapw$; see the discussion following \assuref{paper_hessian} in
+\subsect{assumptions}.
+
+As an example, consider a family of continuously differentiable loss functions
+$f\left(\cdot, \theta\right)$ parameterized by $\theta$ and evaluated at data
+points $x_{n},n=1, \ldots, N$. If we want to solve the optimization problem
+%
+$\thetahat=\underset{\theta\in\Omega_{\theta}}
+    {\mathrm{argmin}}\frac{1}{N}\sum_{n=1}^{N}f\left(x_{n},\theta\right),$
+%
+then we take $g_{n}\left(\theta\right)=\partial
+f\left(x_{n},\theta\right)/\partial\theta$ and $w_{n}\equiv1$. By keeping our
+notation general, we will be able to analyze a more general class of problems,
+such as multi-stage optimization (see \sect{genomics}). However, to aid
+intuition, we will sometimes refer to the $g_{n}\left(\theta\right)$ as
+``gradients'' and their derivatives as ``Hessians.''
+
+When \eqref{estimating_equation} is not degenerate (we articulate precise
+conditions below), $\thetahat$ is a function of the weights through solving the
+estimating equation, and we write $\thetapw$ to emphasize this.
+We will focus on the case where we have solved \eqref{estimating_equation} for
+the weight vector of all ones, $\onevec:=\left(1, \ldots, 1\right)$, which we denote
+$\thetaone := \thetahat\left(\onevec\right)$.
+
+A re-sampling scheme can be specified by choosing a set
+$W\subseteq\mathbb{R}^{N}$ of weight vectors. For example, to approximate
+leave-$k$-out CV, one repeatedly computes $\thetapw$ where $w$ has $k$ randomly
+chosen zeros and all ones otherwise.  Define $\wcv$ as the set of every possible
+leave-$k$-out weight vector.  Showing that our approximation is good for all
+leave-$k$-out analyses with probability one is equivalent to showing that the
+approximation is good for all $w \in \wcv$.
+
+In the case of the bootstrap, $W$ contains a fixed number $B$ of randomly chosen
+weight vectors,
+$w_{b}^{*}\stackrel{iid}{\sim}\mathrm{Multinomial}\left(N,N^{-1}\right)$ for
+$b=1, \ldots, B$, so that $\sum_{n=1}^N w_{bn}^{*} = N$ for each $b$. Note that
+while $w_n$ or $w_{bn}^{*}$ are scalars, $w_{b}^{*}$ is a vector of length $N$.
+The distribution of
+$\thetahat\left(w_{b}^{*}\right)-\thetahat\left(\onevec\right)$ is then used to
+estimate the sampling variation of $\thetaone$. Define this set $\wboot =
+\{w_{1}^{*},\ldots,w_{B}^{*}\}$.  Note that $\wboot$ is stochastic and is a
+subset of all weight vectors that sum to $N$.
+
+In general, $W$ can be deterministic or stochastic, may contain integer or
+non-integer values, and may be determined independently of the data or jointly
+with it. As with the data, our results hold for a given $W$, but in a way that
+will allow natural high-probability extensions to stochastic $W$.

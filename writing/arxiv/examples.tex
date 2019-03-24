@@ -1,0 +1,82 @@
+
+The moral of \thmrefref{paper_ij_error} is that, under \paperallcoreassum and
+\condref{paper_uniform_bound},
+$\norm{\thetaij-{\thetaw}}=O\left(\delta^{2}\right)$ for $w\in W_{\delta}$. That
+is, if we can make $\delta$ small enough, $W_{\delta}$ big enough, and still
+satisfy \condref{paper_uniform_bound}, then $\thetaij\left(w\right)$ is a good
+approximation to $\thetaw$ for ``most'' $w$, where ``most'' is defined as the size
+of $W_\delta$. So it is worth taking a moment to develop some intuition for
+\condref{paper_uniform_bound}. We have already seen in
+\corollary{paper_k_means_consistent} that $\thetaij$ is, asymptotically, a good
+approximation for leave-$k$-out CV uniformly in $W$. We now discuss some additional
+cases: first, a worst-case example for which $\thetaij$ is not expected to work,
+second the bootstrap, and finally we revisit leave-one-out cross
+validation in the context of these other two methods.
+
+First, consider a pathological example. Let $W_{full}$ be the set of all weight
+vectors that sum to $N$. Let
+$n^{*}=\max_{n\in[N]}\norm{g_{n}\left(\thetaone\right)}_{1}$ be the index of the
+gradient term with the largest $L_{1}$ norm, and let $w_{n^{*}}=N$ and $w_n=0$
+for $n \ne n^{*}$. Then
+%
+\begin{align*}
+&\sup_{\theta\in\Omega_{\theta}}
+    \norm{\frac{1}{N}\sum_{n=1}^{N}
+        \left(w_{n}-1\right)g_{n}\left(\theta\right)}_{1} \\
+&\quad =\sup_{\theta\in\Omega_{\theta}}
+    \norm{g_{n^{*}}\left(\theta\right)-
+        \frac{1}{N}\sum_{n=1}^{N}g_{n}\left(\theta\right)}_{1}
+    \ge\norm{g_{n^{*}}\left(\thetaone\right)}_{1}.
+\end{align*}
+%
+(The last inequality uses the fact that $G\left(\thetaone,\onevec\right)=0$.) In
+this case, unless the largest gradient,
+$\norm{g_{n^{*}}\left(\thetaone\right)}_{1}$, is small,
+\condref{paper_uniform_bound} will not be satisfied for small $\delta$, and we
+would not expect $\thetaij$ to be a good estimate for $\thetaw$ for all $w\in
+W_{full}$. The class $W_{full}$ is too expressive. In the language of
+\condref{paper_uniform_bound}, for some small fixed $\delta$, $W_{\delta}$ will
+be some very restricted subset of $W_{full}$ in most realistic situations.
+
+Now, suppose that we are using $B$ bootstrap weights,
+$w_{b}^{*}\stackrel{iid}{\sim} \mathrm{Multinomial}\left(N,N^{-1}\right)$ for
+$b=1,...,B$, and analyzing an optimization problem as defined in
+\subsect{problem_definition}.
+For a given $w_{b}^{*}$, a dataset $x_{1}^*,...,x_{N}^*$ formed by taking
+$w_{b,n}^{*}$ copies of datapoint $x_n$ is equivalent in distribution to
+$N$ IID samples with replacement from the empirical distribution
+on $\left(x_{1},...,x_{N}\right)$.  In this notation, we then have
+%
+\begin{align*}
+&\frac{1}{N}\sum_{n=1}^{N}\left(w_{b}^{*}-1\right)g_{n}\left(\theta\right) = \\
+&\quad \frac{1}{N}\sum_{n=1}^{N}\frac{\partial
+    f\left(\theta,x_{n}^{*}\right)}{\partial\theta} -
+        \frac{1}{N}\sum_{n=1}^{N}\frac{\partial
+    f\left(\theta,x_{n}\right)}{\partial\theta}.
+\end{align*}
+%
+In this case, \condref{paper_uniform_bound} is a uniform bound on a centered
+empirical process of derivatives of the objective function. Note that estimating
+sample variances by applying the IJ with bootstrap weights is equivalent to the
+ordinary delta method based on an asymptotic normal approximation \citep[Chapter
+21]{efron:1982:jackknife}.  In order to provide an approximation to the
+bootstrap that retains benefits (such as the faster-than-normal convergence to
+the true sampling distribution described by \citet{hall:2013:bootstrap}), one
+must consider higher-ordered Taylor expansions of $\thetapw$.  We leave this for
+future work.
+
+Finally, let us return to leave-one-out CV. In this case, $w_{n}-1$ is nonzero
+for exactly one entry. Again, we can choose to leave out the
+adversarially-chosen $n^{*}$ as in the first pathological example.  However,
+unlike the pathological example, the leave-one-out CV weights are constrained to
+be closer to $\onevec$---specifically, we set $w_{n^{*}}=0$, and let $w$ be one
+elsewhere. Then \condref{paper_uniform_bound} requires
+%
+$\sup_{\theta\in\Omega_{\theta}}\norm{\frac{1}{N}g_{n^{*}}\left(\theta\right)}_{1}  \le\delta.$
+%
+In contrast to the pathological example, this supremum will get smaller as $N$
+increases as long as $\norm{g_{n^{*}}\left(\theta\right)}_{1}$ grows more slowly
+than $N$. For this reason, we expect leave-one-out (and, indeed, leave-$k$-out
+for fixed $k$) to be accurately approximated by $\thetaij$ in many cases of
+interest, as stated in \corollary{paper_k_means_consistent}.
+%

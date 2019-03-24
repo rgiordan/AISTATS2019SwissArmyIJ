@@ -6,22 +6,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-<<set_single_column, echo=FALSE>>=
-# We can't use the for_arxiv toggle because knitr processes before main is
-# run.  So set the appropriate variable here.
-single_column <- TRUE       # for the arxiv
-#single_column <- FALSE      # for a two-column conference paper.
-@
 
-<<setup, include=FALSE, cache=FALSE>>=
-knitr_debug <- FALSE # Set to true to see error output
-simple_cache <- FALSE # Set to true to cache knitr output for this analysis.
-source("R_scripts/initialize.R", echo=FALSE)
-@
 
-<<load_data>>=
-source(file.path(paper_directory, "R_scripts/load_data.R"))
-@
+
+
+
 
 We begin the empirical demonstration of our method on two simple generalized
 linear models: logistic and Poisson regression.\footnote{Leave-one-out CV may
@@ -35,14 +24,19 @@ drawn from a multivariate Gaussian, and $y_n$ is a scalar drawn from a Bernoulli
 distribution with the logit link or from a Poisson distribution with the
 exponential link.
 %
-<<graph_fig_cap1>>=
-figcap <- "Simulated data: accuracy results."
-@
-<<simulated_experiments_accuracy, cache=simple_cache, fig.show='hold', fig.cap=figcap>>=
-SetImageSize(
-    aspect_ratio=1.0 * base_aspect_ratio, image_width=base_image_width)
-source("R_scripts/synthetic/synthetic_accuracy_graph.R", echo=knitr_debug, print.eval=TRUE)
-@
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[!h]
+
+{\centering \includegraphics[width=0.98\linewidth,height=0.784\linewidth]{figure/simulated_experiments_accuracy-1} 
+
+}
+
+\caption[Simulated data]{Simulated data: accuracy results.}\label{fig:simulated_experiments_accuracy}
+\end{figure}
+
+
+\end{knitrout}
 %
 For a ground truth, we generate a large test set with $N=100{,}000$ datapoints
 to measure the true generalization error. We show in
@@ -51,15 +45,19 @@ our approximation consistently underestimates the actual error predicted by
 exact leave-one-out CV; however, the difference is small relative to the
 improvements they both make over the error evaluated on the training set.
 %
-<<graph_fig_cap2>>=
-figcap <- "Simulated data: timing results."
-# Use a little less vertical space for this figure.
-SetImageSize(
-    aspect_ratio=0.7 * base_aspect_ratio, image_width=base_image_width)
-@
-<<simulated_experiments_timing, cache=simple_cache, fig.show='hold', fig.cap=figcap>>=
-source("R_scripts/synthetic/synthetic_timing_graph.R", echo=knitr_debug, print.eval=TRUE)
-@
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[!h]
+
+{\centering \includegraphics[width=0.98\linewidth,height=0.549\linewidth]{figure/simulated_experiments_timing-1} 
+
+}
+
+\caption[Simulated data]{Simulated data: timing results.}\label{fig:simulated_experiments_timing}
+\end{figure}
+
+
+\end{knitrout}
 %
 \fig{simulated_experiments_timing} shows the relative timings of our
 approximation and exact leave-one-out CV on logistic regression with datasets of

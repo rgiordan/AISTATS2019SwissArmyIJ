@@ -1,0 +1,122 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% BEGIN LYX STUFF
+
+% Please don't edit this section manually. It's fussy and hard to get it to work.
+% As it currently is, we can incorporate files from LyX.
+
+% Please copy these from LyX so we can use both styles of writing
+\AtBeginDocument{\providecommand\assuref[1]{\ref{assu:#1}}}
+\AtBeginDocument{\providecommand\condref[1]{\ref{cond:#1}}}
+\AtBeginDocument{\providecommand\lemref[1]{\ref{lem:#1}}}
+\AtBeginDocument{\providecommand\defrefref[1]{\ref{defref:#1}}}
+\AtBeginDocument{\providecommand\proprefref[1]{\ref{propref:#1}}}
+\AtBeginDocument{\providecommand\thmrefref[1]{\ref{thmref:#1}}}
+\AtBeginDocument{\providecommand\corref[1]{\ref{corref:#1}}}
+
+\theoremstyle{plain}
+    \ifx\thechapter\undefined
+      \newtheorem{assumption}{\protect\assumptionname}
+    \else
+      \newtheorem{assumption}{\protect\assumptionname}[chapter]
+    \fi
+\theoremstyle{definition}
+    \ifx\thechapter\undefined
+      \newtheorem{defn}{\protect\definitionname}
+    \else
+      \newtheorem{defn}{\protect\definitionname}[chapter]
+    \fi
+\theoremstyle{plain}
+    \ifx\thechapter\undefined
+      \newtheorem{condition}{\protect\conditionname}
+    \else
+      \newtheorem{condition}{\protect\conditionname}[chapter]
+    \fi
+\theoremstyle{plain}
+    \ifx\thechapter\undefined
+      \newtheorem{prop}{\protect\propositionname}
+    \else
+      \newtheorem{prop}{\protect\propositionname}[chapter]
+    \fi
+\theoremstyle{plain}
+    \ifx\thechapter\undefined
+      \newtheorem{lem}{\protect\lemmaname}
+    \else
+      \newtheorem{lem}{\protect\lemmaname}[chapter]
+    \fi
+\theoremstyle{plain}
+    \ifx\thechapter\undefined
+	    \newtheorem{thm}{\protect\theoremname}
+	  \else
+      \newtheorem{thm}{\protect\theoremname}[chapter]
+    \fi
+\theoremstyle{plain}
+    \ifx\thechapter\undefined
+  \newtheorem{cor}{\protect\corollaryname}
+\else
+      \newtheorem{cor}{\protect\corollaryname}[chapter]
+    \fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\newref{cond}{refcmd={Condition \ref{#1}}}
+\newref{assu}{refcmd={Assumption \ref{#1}}}
+\newref{propref}{refcmd={Proposition \ref{#1}}}
+\newref{corref}{refcmd={Corrolary \ref{#1}}}
+\newref{lem}{refcmd={Lemma \ref{#1}}}
+\newref{defref}{refcmd={Definition \ref{#1}}}
+\newref{thmref}{refcmd={Theorem \ref{#1}}}
+
+\makeatother
+
+%\usepackage{babel}
+\providecommand{\assumptionname}{Assumption}
+\providecommand{\conditionname}{Condition}
+\providecommand{\corollaryname}{Corollary}
+\providecommand{\definitionname}{Definition}
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\propositionname}{Proposition}
+\providecommand{\theoremname}{Theorem}
+
+\global\long\def\at#1{\rvert_{#1}}
+
+\global\long\def\norm#1{\left\Vert #1\right\Vert }
+
+\global\long\def\mbe{\mathbb{E}}
+
+\global\long\def\thetahat{\hat{\theta}}
+
+\global\long\def\onevec{1_{w}}
+
+\global\long\def\thetawiggle{\tilde{\theta}}
+
+\global\long\def\thetaone{\hat{\theta}_{1}}
+
+\global\long\def\thetaij{\hat{\theta}_{\textrm{IJ}}}
+
+\newcommandx\thetaw[1][usedefault, addprefix=\global, 1=w]{\hat{\theta}\left(#1\right)}
+
+\global\long\def\hone{H_{1}}
+
+\global\long\def\constij{C_{\textrm{IJ}}}
+
+\global\long\def\consth{C_{h}}
+
+\global\long\def\constg{C_{g}}
+
+\global\long\def\constw{C_{w}}
+
+\newcommandx\constop[1][usedefault, addprefix=\global, 1={\text{\,}}]{C_{op}^{#1}}
+
+\global\long\def\liph{L_{h}}
+
+\global\long\def\thetasize{\Delta_{\theta}}
+
+\global\long\def\deltasize{\Delta_{\delta}}
+
+\global\long\def\thetaball{B_{\Delta_{\theta}}}
+
+\global\long\def\thetadeltaball{B_{C_{op}\delta}}
+
+
+% END LYX STUFF
+%%%%%%%%%%%%%%%%%%%%%%%

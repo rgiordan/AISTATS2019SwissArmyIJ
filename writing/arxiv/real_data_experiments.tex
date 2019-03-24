@@ -6,34 +6,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-<<set_single_column, echo=FALSE>>=
-# We can't use the for_arxiv toggle because knitr processes before main is
-# run.  So set the appropriate variable here.
-single_column <- TRUE       # for the arxiv
-#single_column <- FALSE      # for a two-column conference paper.
-@
 
-<<setup, include=FALSE, cache=FALSE>>=
-knitr_debug <- FALSE # Set to true to see error output
-simple_cache <- FALSE # Set to true to cache knitr output for this analysis.
-source("R_scripts/initialize.R", echo=FALSE)
-@
 
-<<load_data>>=
-source(file.path(paper_directory, "R_scripts/load_data.R"))
-initial_hess_time <- median(genomics_env$metadata_df$initial_hess_time)
-initial_opt_time <- median(genomics_env$metadata_df$initial_opt_time)
-fullparamdim <- median(
-    genomics_env$metadata_df$gmm_param_length +
-    genomics_env$metadata_df$reg_param_length)
-fullparamdim <- round(fullparamdim, digits=-3)
-@
 
-<<define_macros, results="asis">>=
-DefineMacro("approxopttime", initial_opt_time, digits=0)
-DefineMacro("approxhesstime", initial_hess_time,digits=0)
-DefineMacro("fullparamdim", fullparamdim, digits=0)
-@
+
+
+
+\newcommand{\approxopttime}{42}
+\newcommand{\approxhesstime}{360}
+\newcommand{\fullparamdim}{39,000}
+
 
 % TODO: define these in knitr instead.
 \global\long\def\splinedegree{3}
@@ -95,13 +77,19 @@ methods (such as BFGS) often got stuck or terminated at points with fairly large
 gradients. At such points our method does not apply in theory nor, we found,
 very well in practice.
 %
-<<graph_fig_cap3>>=
-figcap <- paste(
-    "Genomics data: accuracy results.", sep="")
-@
-<<mse_graph, cache=simple_cache, fig.show='hold', fig.cap=figcap>>=
-source("R_scripts/genomics/mse_graph.R", echo=knitr_debug, print.eval=TRUE)
-@
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[!h]
+
+{\centering \includegraphics[width=0.98\linewidth,height=0.784\linewidth]{figure/mse_graph-1} 
+
+}
+
+\caption[Genomics data]{Genomics data: accuracy results.}\label{fig:mse_graph}
+\end{figure}
+
+
+\end{knitrout}
 %
 \fig{mse_graph} shows that the IJ is a reasonably good approximation to the test
 set error.\footnote{In fact, in this case, the IJ is a better predictor of test
@@ -113,15 +101,19 @@ like exact CV, the IJ is able to prevent overfitting. Though the IJ
 underestimates exact CV, we note that it differs from exact CV by no more than
 exact CV itself differs from the true quantity of iterest, the test error.
 %
-<<graph_fig_cap4>>=
-figcap <- paste(
-    "Genomics data: timing results.", sep="")
-# Use a little more vertical space for this figure.
-SetImageSize(aspect_ratio=0.9 * base_aspect_ratio)
-@
-<<timing_graph, cache=simple_cache, fig.show='hold', fig.cap=figcap>>=
-source("R_scripts/genomics/timing_graph.R", echo=knitr_debug, print.eval=TRUE)
-@
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[!h]
+
+{\centering \includegraphics[width=0.98\linewidth,height=0.706\linewidth]{figure/timing_graph-1} 
+
+}
+
+\caption[Genomics data]{Genomics data: timing results.}\label{fig:timing_graph}
+\end{figure}
+
+
+\end{knitrout}
 %
 The timing results for the genomics experiment are shown in \fig{timing_graph}.
 For this particular problem with approximately $\fullparamdim$ parameters (the

@@ -39,8 +39,9 @@ DefineMacro <- function(macro_name, value, digits=3) {
 # aspect ratio refers to height / width.
 if (single_column) {
   # This is for the arxiv (single-column) version.
-  base_aspect_ratio <- 3.5 / (5 * 2)
-  base_image_width <- 4.9 * 2
+  #base_aspect_ratio <- 3.5 / (5 * 2)
+  base_aspect_ratio <- 8 / (5 * 2)
+  base_image_width <- 5.5
 } else {
   # This is for the AISTATS (two-column) submission.
   base_aspect_ratio <- 8 / (5 * 2)

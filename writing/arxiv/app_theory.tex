@@ -1,0 +1,597 @@
+\newcommand{\globalassum}{Assumptions \ref{assu:paper_smoothness}---\ref{assu:paper_bounded} }
+
+\section{Detailed assumptions, lemmas, and proofs\label{sec:appendix_proofs}}
+
+
+
+
+
+\subsection{Tools}
+
+We begin by stating two general propositions that will be useful.
+First, we show that a version of Cauchy-Schwartz can be applied to
+weighted sums of tensors.
+\begin{prop}
+\label{propref:tensor_cauchy_schwartz}Tensor array version of H{\"o}lder's
+inequality. Let $w$ be an array of scalars and let $a=\left(a_{1},...,a_{N}\right)$
+be an array of tensors, were each $a_{n}$ is indexed by $i=1,\ldots,D_{A}$
+($i$ may be a multi-index---e.g., if $A$ is a $D\times D$ matrix,
+then $i=\left(j,k\right)$, for $j,k\in\left[D\right]$ and $D_{A}=D^{2}$).
+Let $p,q\in\left[1,\infty\right]$ be two numbers such that $p^{-1}+q^{-1}=1$.
+Then
+\begin{align*}
+\norm{\frac{1}{N}\sum_{n=1}^{N}w_{n}a_{n}}_{1} & \le\frac{D_{A}^{\frac{1}{p}}}{N}\norm w_{p}\norm a_{q}.
+\end{align*}
+In particular, with $p=q=2$,
+\begin{align*}
+\norm{\frac{1}{N}\sum_{n=1}^{N}w_{n}a_{n}}_{1} & \le\sqrt{D_{A}}\frac{\norm w_{2}}{\sqrt{N}}\frac{\norm a_{2}}{\sqrt{N}}.
+\end{align*}
+\end{prop}
+\begin{proof}
+The conclusion follows from the ordinary H{\"o}lder's inequality
+applied term-wise to $n$ and Jensen's inequality applied to the indices
+$i$.
+
+\begin{align*}
+\norm{\frac{1}{N}\sum_{n=1}^{N}w_{n}a_{n}}_{1} & =\sum_{i=1}^{D_{A}}\left|\frac{1}{N}\sum_{n=1}^{N}w_{n}\left(a_{n}\right)_{i}\right|\\
+ & \le\frac{1}{N}\sum_{i=1}^{D_{A}}\left|\left(\sum_{n=1}^{N}\left|w_{n}\right|^{p}\right)^{\frac{1}{p}}\left(\sum_{n=1}^{N}\left|\left(a_{n}\right)_{i}\right|^{q}\right)^{\frac{1}{q}}\right|\text{(H{\"o}lder)}\\
+ & =\frac{1}{N}\norm w_{p}\frac{D_{A}}{D_{A}}\sum_{i=1}^{D_{A}}\left(\sum_{n=1}^{N}\left|\left(a_{n}\right)_{i}\right|^{q}\right)^{\frac{1}{q}}\\
+ & \le\frac{1}{N}\norm w_{p}D_{A}\left(\frac{1}{D_{A}}\sum_{i=1}^{D_{A}}\sum_{n=1}^{N}\left|\left(a_{n}\right)_{i}\right|^{q}\right)^{\frac{1}{q}}\textrm{ (Jensen applied to }i\textrm{)}\\
+ & =\frac{1}{N}\norm w_{p}D_{A}\left(\frac{1}{D_{A}}\sum_{n=1}^{N}\norm{a_{n}}_{q}^{q}\right)^{\frac{1}{q}}\\
+ & =\frac{1}{N}\norm w_{p}D_{A}^{1-\frac{1}{q}}\norm a_{q}\\
+ & =\frac{D_{A}^{\frac{1}{p}}}{N}\norm w_{p}\norm a_{q}.
+\end{align*}
+\end{proof}
+%
+Next, we prove a relationship between the term-wise difference between
+matrices and the difference between their operator norms. It is well-known
+that the minimum eigenvalue of a non-singular matrix is continuous
+in the entries of the matrix. In the next proposition, we quantify
+this continuity for the $L_{1}$ norm.
+\begin{prop}
+\label{propref:operator_norm_continuity}Let $A$ and $B$ be two
+matrices. Let $\norm{A^{-1}}_{op}\le\constop$ for some finite $\constop$,
+Then
+\begin{align*}
+\norm{A-B}_{1}\le\frac{1}{2}\constop[-1] & \quad\Rightarrow\quad\norm{B^{-1}}_{op}\le2\constop.
+\end{align*}
+\end{prop}
+\begin{proof}
+We will use \citet[Theorem 5.20]{schott:2016:matrix} and the associated
+discussion, which states the following general result. Take any matrix
+norm $\norm{\cdot}$ that satisfies $\norm I=1$, where $I$ is the
+identity matrix. Then if $\norm{A^{-1}}\norm{A-B}<1$, then
+\begin{align}
+\norm{A^{-1}-\left(A-B\right)^{-1}} & \le\frac{\norm{A^{-1}}\norm{A-B}}{1-\norm{A^{-1}}\norm{A-B}}\norm{A^{-1}}.\label{eq:matrix_norm_continuity}
+\end{align}
+
+We will apply \eqref{matrix_norm_continuity} using the operator norm
+$\norm{\cdot}_{op}$, for which $\norm I_{op}=1$. First, note that
+\begin{align*}
+\norm{A^{-1}}_{op}\norm{A-B}_{op} & \le\norm{A^{-1}}_{op}\norm{A-B}_{1}\textrm{ (ordering of matrix norms)}\\
+ & \le\frac{1}{2}\constop\constop[-1]\\
+ & =\frac{1}{2},
+\end{align*}
+
+so we can apply \eqref{matrix_norm_continuity}. Then
+\begin{align*}
+\norm{B^{-1}}_{op}
+ & \le \norm{B^{-1}-A^{-1}}_{op}+\norm{A^{-1}}_{op}\textrm{ (triangle inequality)}\\
+ & \le\frac{\norm{A^{-1}}_{op}\norm{A-B}_{op}}{1-\norm{A^{-1}}_{op}\norm{A-B}_{op}}\norm{A^{-1}}_{op}+\norm{A^{-1}}_{op}\textrm{ (Equation \ref{eq:matrix_norm_continuity})}\\
+ & \le\left(\frac{\frac{1}{2}}{1-\frac{1}{2}}+1\right)\norm{A^{-1}}\\
+ & \le2\constop.
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+
+
+\subsection{Lemmas}
+
+We now prove some useful consequences of our assumptions. The proof
+roughly proceeds for all $w\in W_{\delta}$ by the following steps:
+\begin{enumerate}
+\item When $\delta$ is small we can make $\norm{{{\thetaw}}-\thetaone}_{2}$
+small. (\lemref{theta_difference_bound} below.)
+\item When $\norm{\theta-\thetaone}_{2}$ is small, then the derivatives
+$H\left(\theta,w\right)$ are close to their optimal value, $H\left(\thetaone,\onevec\right)$.
+(\lemref{bounded_continuous} and \lemref{gh_difference_from_one}
+below.)
+\item When the derivatives are close to their optimal values, then $H\left(\theta,w\right)$
+is uniformly non-singular. (\lemref{continuous_invertibility} below.)
+\item When the derivatives are close to their optimal values and $H\left(\theta,w\right)$
+is uniformly non-singular we can control the error in $\thetaij-\thetaw$
+in terms of $\delta$. (\thmrefref{taylor_error_first} below.)
+\end{enumerate}
+We begin by showing that the difference between $\thetaw$ and $\thetaone$
+for $w\in W_{\delta}$ can be made small by making $\delta$ from
+\condref{paper_uniform_bound} small.
+
+\begin{lem}
+\label{lem:theta_difference_bound}Small parameter changes. Under
+\globalassum and \condref{paper_uniform_bound},
+\begin{align*}
+\textrm{for all }w\in W_{\delta},\quad\norm{{{\thetaw}}-\thetaone}_{2} & \le\constop\delta.
+\end{align*}
+\end{lem}
+\begin{proof}
+By a first-order Taylor expansion in $\theta$, for some $\tilde{\theta}$
+such that $\norm{\tilde{\theta}-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+\begin{align*}
+G\left(\thetaw,\onevec\right) & =G\left(\thetaone,\onevec\right)+H\left(\tilde{\theta},\onevec\right)\left(\thetaw-\thetaone\right).
+\end{align*}
+By \assuref{paper_hessian}, $H\left(\tilde{\theta},\onevec\right)$
+is non-singular. A little manipulation, together with the fact that
+$G\left(\thetaw,w\right)=G\left(\thetaone,\onevec\right)=0$ gives
+\begin{align*}
+G\left(\thetaw,\onevec\right)-G\left(\thetaw,w\right) & =H\left(\tilde{\theta},\onevec\right)\left(\thetaw-\thetaone\right)\Rightarrow\\
+\thetaw-\thetaone & =H\left(\tilde{\theta},\onevec\right)^{-1}\left(G\left(\thetaw,\onevec\right)-G\left(\thetaw,w\right)\right).
+\end{align*}
+Applying \condref{paper_uniform_bound} and \assuref{paper_hessian},
+\begin{align*}
+\norm{{{\thetaw}}-\thetaone}_{2} & =\norm{H\left(\tilde{\theta},\onevec\right)^{-1}\left(G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)\right)}_{2}\\
+ & \le\norm{H\left(\tilde{\theta},\onevec\right)^{-1}}_{op}\norm{\left(G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)\right)}_{2}\\
+ & \le\sup_{\theta\in\Omega_{\theta}}\norm{H\left(\theta,\onevec\right)^{-1}}_{op}\norm{\left(G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)\right)}_{2}\\
+ & \le\constop\norm{G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
+ & \le\constop\norm{G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)}_{1}\textrm{ (relation between norms)}\\
+ & \le\constop\sup_{\theta\in\Omega_{\theta}}\norm{G\left(\theta,\onevec\right)-G\left(\theta,w\right)}_{1}\\
+ & \le\constop\delta.\textrm{ (Condition \ref{cond:paper_uniform_bound}).}
+\end{align*}
+\end{proof}
+%
+Because we will refer to it repeatedly, we give the set of $\theta$
+defined in \lemref{theta_difference_bound} a name.
+\begin{defn}
+For a given $\delta$, define the region around $\thetaone$ given
+by \lemref{theta_difference_bound} as
+
+\begin{align*}
+\thetadeltaball & :=\left\{ \theta:\norm{\theta-\thetaone}_{2}\le\constop\delta\right\} \bigcap\Omega_{\theta}.
+\end{align*}
+\end{defn}
+%
+In other words, \lemref{theta_difference_bound} states that \condref{paper_uniform_bound}
+implies $\thetaw\in\thetadeltaball$ when $w\in W_{\delta}$.
+
+Next, we show that closeness in $\theta$ will mean closeness in $H\left(\theta,w\right)$.
+\begin{lem}
+\label{lem:bounded_continuous} Boundedness and continuity. Under
+\paperallcoreassum and \condref{paper_uniform_bound},
+\begin{align*}
+\textrm{for all }\theta\in\thetaball,\quad\sup_{w\in W}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1} & \le D\constw\liph\norm{\theta-\thetaone}_{2}.
+\end{align*}
+\end{lem}
+\begin{proof}
+For $\theta\in\thetaball$,
+\begin{align*}
+\sup_{w\in W}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1} & =\sup_{w\in W}\norm{\frac{1}{N}\sum_{n=1}^{N}w_{n}\left(h_{n}\left(\theta\right)-h_{n}\left(\thetaone\right)\right)}_{1}\textrm{ (by definition)}\\
+ & \le D\sup_{w\in W}\frac{\norm w_{2}}{\sqrt{N}}\frac{\norm{h\left(\theta\right)-h\left(\thetaone\right)}_{2}}{\sqrt{N}}\textrm{ (Proposition \ref{propref:tensor_cauchy_schwartz})}\\
+ & \le D\constw\frac{\norm{h\left(\theta\right)-h\left(\thetaone\right)}_{2}}{\sqrt{N}}\textrm{ (Assumption \ref{assu:paper_weight_bounded})}\\
+ & \le D\constw\liph\norm{\theta-\thetaone}_{2}\textrm{ (Assumption \ref{assu:paper_lipschitz} and }\theta\in\thetaball\textrm{)}.
+\end{align*}
+\end{proof}
+%
+We now combine \lemref{theta_difference_bound} and \lemref{bounded_continuous}
+to show that $H\left(\theta,w\right)$ is close to its value at the
+solution $H\left(\thetaone,\onevec\right)$ for sufficiently small
+$\delta$ and for all $\theta\in\thetadeltaball$.
+%
+\begin{lem}
+\label{lem:gh_difference_from_one}Bounds for difference in parameters.
+Under \paperallcoreassum and \condref{paper_uniform_bound}, if $\delta\le\thetasize\constop[-1]$,
+then
+\begin{align*}
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}} & \norm{H\left(\theta,w\right)-H\left(\thetaone,\onevec\right)}_{1}\le\left(1+D\constw\liph\constop\right)\delta.
+\end{align*}
+\end{lem}
+\begin{proof}
+By \lemref{theta_difference_bound}, $\delta\le\thetasize\constop[-1]$
+implies that $\constop\delta\le\thetasize$ and so $\thetadeltaball\subseteq\thetaball$.
+Consequently, we can apply \lemref{bounded_continuous}:
+\begin{align*}
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1} & \le\sup_{\theta\in\thetaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1}\\
+ & \le D\constw\liph\norm{\theta-\thetaone}_{2}\textrm{ (Lemma \ref{lem:bounded_continuous})}\\
+ & \le D\constw\liph\constop\delta\quad\textrm{ (because }\theta\in\thetadeltaball\textrm{)}.
+\end{align*}
+%
+Next, we can use this to write
+\begin{align*}
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}} & \norm{H\left(\theta,w\right)-H\left(\thetaone,\onevec\right)}_{1}\\
+ & =\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\theta,\onevec\right)+H\left(\theta,\onevec\right)-H\left(\thetaone,\onevec\right)}_{1}\\
+ & \le\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\theta,\onevec\right)}_{1}+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,\onevec\right)-H\left(\thetaone,\onevec\right)}_{1}\\
+ & \le\sup_{\theta\in\Omega_{\theta}}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\theta,\onevec\right)}_{1}+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,\onevec\right)-H\left(\thetaone,\onevec\right)}_{1}\\
+ & \le\delta+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,\onevec\right)-H\left(\thetaone,\onevec\right)}_{1}\textrm{ (Condition \ref{cond:paper_uniform_bound})}\\
+ & \le\delta+D\constw\liph\constop\delta.
+\end{align*}
+\end{proof}
+%
+The constant that appears multiplying $\delta$ at the end of the proof of
+\lemref{gh_difference_from_one} will appear often in what follows, so we give it
+the special name $\constij$ in \defrefref{constants_definition}.
+
+% \begin{defn}
+% Define the constant that appears in the Hessian bound of \lemref{gh_difference_from_one}
+% as
+% \begin{align*}
+% \constij & :=1+D\constw\liph\constop.
+% \end{align*}
+% \end{defn}
+%
+Note that \lemref{gh_difference_from_one} places a condition on how
+small $\delta$ must be in order for our regularity conditions to
+apply. \lemref{theta_difference_bound} will guarantee that $\thetaw\in\thetadeltaball$,
+but if we are not able to make $\delta$ arbitrarily small in \condref{paper_uniform_bound},
+then we are not guaranteed to ensure that $\thetadeltaball\subseteq\thetaball$,
+will not be able to assume Lipschitz continuity, and none of our results
+will apply.
+
+Next, using \lemref{gh_difference_from_one}, we can extend the operator
+bound on $\hone^{-1}$ from \assuref{paper_hessian} to $H\left(\theta,w\right)^{-1}$
+for all $w\in W_{\delta}$, not only for $w=\onevec$.
+
+\begin{lem}
+\label{lem:continuous_invertibility}Uniform invertibility of the
+Hessian. Under \paperallcoreassum and \condref{paper_uniform_bound}, if $\delta\le\min\left\{ \thetasize\constop[-1],\frac{1}{2}\constij^{-1}\constop[-1]\right\} $,
+then
+\begin{align*}
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)^{-1}}_{op} & \le2\constop.
+\end{align*}
+\end{lem}
+\begin{proof}
+By \assuref{paper_hessian}, $\norm{H\left(\thetaone,\onevec\right)^{-1}}_{op}\le\constop$.
+So by \proprefref{operator_norm_continuity}, it will suffice to select
+$\delta$ so that
+\begin{align}
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\thetaone,\onevec\right)}_{1} & \le\frac{1}{2}\constop[-1].\label{eq:h_bound}
+\end{align}
+When we can apply \lemref{gh_difference_from_one}, we have
+\begin{align*}
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}}\norm{H\left(\theta,w\right)-H\left(\thetaone,\onevec\right)}_{1} & \le\constij\delta.
+\end{align*}
+So $H\left(\theta,w\right)$ will satisfy \eqref{h_bound} if we can
+apply \lemref{gh_difference_from_one} and if
+\begin{align*}
+\delta\le & \frac{1}{2}\constop[-1]\constij^{-1}.
+\end{align*}
+To apply \lemref{gh_difference_from_one} we additionally require
+that $\delta\le\thetasize\constop[-1]$. By taking $\delta\le\min\left\{ \thetasize\constop[-1],\frac{1}{2}\constop[-1]\constij^{-1}\right\} $,
+we satisfy \eqref{h_bound} and the result follows.
+\end{proof}
+%
+At last, the upper bound on $\delta$ will be sufficient to control
+the error terms in our approximation. For compactness, we give it
+the name $\deltasize$ in \defrefref{constants_definition}.
+% \begin{defn}
+% Define $\deltasize$ as the upper bound on $\delta$ given by \lemref{continuous_invertibility}.
+% \begin{align*}
+% \deltasize & :=\min\left\{ \thetasize\constop[-1],\frac{1}{2}\constop[-1]\constij^{-1}\right\} .
+% \end{align*}
+%
+%\end{defn}
+
+Finally, we state a result that will allow us to define derivatives
+of $\thetaw$ with respect to $w$.
+\begin{lem}
+\label{lem:implicit_function_theorem}Inverse function theorem. Under
+\paperallcoreassum and \condref{paper_uniform_bound}, and for $\delta\le\deltasize$,
+there exists a continuous, differentiable function of $w$, $\thetahat\left(w\right)$,
+such that, for all $w\in W$, G$\left(\thetahat\left(w\right),w\right)=0$.
+\end{lem}
+\begin{proof}
+This follows from \lemref{continuous_invertibility} and the implicit
+function theorem.
+\end{proof}
+By definition, $\thetahat\left(\onevec\right)=\thetaone$.
+
+
+
+
+
+
+\subsection{Bounding the errors in a Taylor expansion}
+
+We are now in a position to use \paperallcoreassum and \condref{paper_uniform_bound}
+to bound the error terms in a first-order Taylor expansion of $\thetaw$.
+We begin by simply calculating the derivative $d\thetahat\left(w\right)/dw$.
+\begin{prop}
+\label{propref:theta_w_first_derivative}For any $w\in W$ for which
+$H\left(\thetaw,w\right)$ is invertible, and for any vector $a\in\mathbb{R}^{N}$,
+\begin{align*}
+\frac{d\thetaw}{dw^{T}}\at wa & =-H\left(\thetaw,w\right)^{-1}G\left(\thetaw,a\right).
+\end{align*}
+\end{prop}
+\begin{proof}
+Because $G\left(\thetaw,w\right)=0$ for all $w\in W$, by direct
+calculation,
+\begin{align*}
+0 & =\frac{d}{dw^{T}}G\left(\thetaw,w\right)\at wa\\
+ & =\left(\frac{\partial G}{\partial\theta^{T}}\frac{d\hat{\theta}}{dw^{T}}+\frac{\partial G}{\partial w^{T}}\right)\at{_{w}}a\\
+ & =H\left(\thetaw,w\right)\frac{d\hat{\theta}}{dw^{T}}\at{_{w}}a+\left(\frac{\partial}{\partial w^{T}}\frac{1}{N}\sum_{n=1}^{N}w_{n}g_{n}\left(\theta\right)\right)\at{_{w}}a\\
+ & =H\left(\thetaw,w\right)\frac{d\hat{\theta}}{dw^{T}}\at{_{w}}a+\frac{1}{N}\sum_{n=1}^{N}g_{n}\left(\thetaw\right)a\\
+ & =H\left(\thetaw,w\right)\frac{d\hat{\theta}}{dw^{T}}\at{_{w}}a+G\left(\thetaw,a\right).
+\end{align*}
+Because $H\left(\thetaw,w\right)$ is invertible by assumption, the
+result follows.
+\end{proof}
+\begin{defn}
+\label{defref:theta_infinitesimal_jackknife}Define
+\begin{align*}
+\thetaij\left(w\right) & :=\thetaone+\frac{d\thetaw}{dw^{T}}\at{\onevec}\left(w-\onevec\right)\\
+ & =\thetaone-\hone^{-1}G\left(\thetaone,w\right).\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}
+\end{align*}
+\end{defn}
+%
+$\thetaij\left(w\right)$ in \defrefref{theta_infinitesimal_jackknife}
+is the first term in a Taylor series expansion of $\thetaw$ as a
+function of $w$. We want to bound the error, $\thetaij\left(w\right)-\thetaw$.
+\begin{thm}
+\label{thmref:taylor_error_first}Under \paperallcoreassum and \condref{paper_uniform_bound},
+when $\delta\le\deltasize$,
+\begin{align*}
+\sup_{w\in W_{\delta}}\norm{\thetaij\left(w\right)-\thetahat\left(w\right)}_{2} & \le2\constop[2]\constij\delta^{2}.
+\end{align*}
+\end{thm}
+\begin{proof}
+By a one-term Taylor series expansion of $G\left(\thetaw,w\right)=0$
+in $\theta$ around $\thetaone$, we have, for some $\thetawiggle$
+such that $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+\begin{align*}
+0=G\left(\thetaw,w\right) & =G\left(\thetaone,w\right)+H\left(\thetawiggle,w\right)\left(\thetaw[w]-\thetaone\right).
+\end{align*}
+Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound}
+implies that $\thetaw\in\thetadeltaball$. Because $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+$\thetawiggle\in\thetadeltaball$ as well. Because $\thetawiggle\in\thetadeltaball$,
+\lemref{continuous_invertibility} implies that $H\left(\thetawiggle,w\right)$
+is invertible, so we can solve for $\thetaw-\thetaone$.
+\begin{align*}
+\thetaw[w]-\thetaone & =-H\left(\thetawiggle,w\right)^{-1}G\left(\thetaone,w\right)\\
+ & =\left(-H\left(\thetawiggle,w\right)^{-1}+H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetaone,\onevec\right)^{-1}\right)G\left(\thetaone,w\right)\\
+ & =\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)+\thetaij\left(w\right)-\thetaone.
+\end{align*}
+Eliminating $\thetaone$ and taking the supremum of both sides we
+have that
+\begin{align*}
+\sup_{w\in W_{\delta}} & \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
+ & =\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)}_{2}\\
+ & =\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)^{-1}\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
+ & \le2\constop\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:continuous_invertibility})}\\
+ & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{op}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
+ & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
+ & \le2\constop\constij\delta\sup_{w\in W_{\delta}}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:gh_difference_from_one})}\\
+ & \le2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
+ & =2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)-G\left(\thetaone,\onevec\right)}_{2}\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
+ & \le2\constop[2]\constij\delta^{2}\textrm{ (Condition \ref{cond:paper_uniform_bound})}.
+\end{align*}
+\end{proof}
+%
+
+
+
+
+
+
+\subsection{Use cases\label{sec:use_cases}}
+
+First, let us state a simple condition under which \coreassum
+hold. It will help to have a lemma for the Lipschitz continuity.
+\begin{lem}
+Derivative Cauchy Schwartz. Let $a\left(\theta\right)=\left(a_{1}\left(\theta\right),...,a_{N}\left(\theta\right)\right)$
+be an array of tensors with multi-index $i\in\left[D_{A}\right]$,
+and let $\frac{\partial a\left(\theta\right)}{\partial\theta}=\left(\frac{\partial}{\partial\theta}a_{1}\left(\theta\right),...,\frac{\partial}{\partial\theta}a_{N}\left(\theta\right)\right)$
+be an array of tensors of size $D\times D_{A}$. Then
+\begin{align*}
+\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}}_{2} & \le D_{A}\norm{\frac{\partial a}{\partial\theta}}_{2}.
+\end{align*}
+\end{lem}
+\begin{proof}
+By direct calculation,
+\begin{align*}
+\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}^{2}}_{2}^{2} & =\sum_{r=1}^{D}\left(\frac{\partial}{\partial\theta_{r}}\sum_{n=1}^{N}\sum_{i=1}^{D_{A}}a_{n,i}\left(\theta\right)^{2}\right)^{2}\\
+ & =\sum_{r=1}^{D}\left(\sum_{n=1}^{N}\sum_{i=1}^{D_{A}}2a_{n,i}\left(\theta\right)\frac{\partial a_{n,i}\left(\theta\right)}{\partial\theta_{r}}\right)^{2}\\
+ & \le\sum_{r=1}^{D}\left(2\sum_{i=1}^{D_{A}}\left(\sum_{n=1}^{N}a_{n,i}\left(\theta\right)^{2}\right)^{\frac{1}{2}}\left(\sum_{n=1}^{N}\left(\frac{\partial a_{n,i}\left(\theta\right)}{\partial\theta_{r}}\right)^{2}\right)^{\frac{1}{2}}\right)^{2}\\
+ & \le\sum_{r=1}^{D}\left(2D_{A}^{2}\left(\frac{1}{D_{A}}\sum_{i=1}^{D_{A}}\sum_{n=1}^{N}a_{n,i}\left(\theta\right)^{2}\right)^{\frac{1}{2}}\left(\frac{1}{D_{A}}\sum_{n=1}^{N}\left(\frac{\partial a_{n,i}\left(\theta\right)}{\partial\theta_{r}}\right)^{2}\right)^{\frac{1}{2}}\right)^{2}\\
+ & =4D_{A}^{2}\norm a_{2}^{2}\sum_{r=1}^{D}\norm{\frac{\partial a}{\partial\theta_{r}}}_{2}^{2}\\
+ & =4D_{A}^{2}\norm a_{2}^{2}\norm{\frac{\partial a}{\partial\theta}}_{2}^{2}.
+\end{align*}
+By the chain rule,
+\begin{align*}
+\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}}_{2}^{2} & =\frac{1}{4\norm{a\left(\theta\right)}_{2}^{2}}\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}^{2}}_{2}^{2}\le D_{A}^{2}\norm{\frac{\partial a}{\partial\theta}}_{2}^{2}.
+\end{align*}
+\end{proof}
+%
+\begin{lem}
+\label{lem:lipschitz_helper}Let $a\left(\theta\right)\in\mathbb{R}^{D\times D}$
+be a continuously differentiable random matrix with a $D\times D\times D$
+derivative tensor. (Note that the function, not $\theta$, is random.
+For example, $\mbe\left[a\left(\theta\right)\right]$ is still a function
+of $\theta$.) Suppose that $\mbe\left[\norm{a\left(\theta\right)}_{2}\right]$
+is finite for all $\theta\in\Omega_{\theta}$. Then, for all $\theta_{1},\theta_{2}\in\Omega_{\theta}$,
+\begin{align*}
+\left|\mbe\left[\norm{a\left(\theta_{1}\right)}_{2}\right]-\mbe\left[\norm{a\left(\theta_{2}\right)}_{2}\right]\right| & \le\sqrt{\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{\frac{\partial a\left(\theta\right)}{\partial\theta}}_{2}^{2}\right]}\norm{\theta_{1}-\theta_{2}}_{2}.
+\end{align*}
+\end{lem}
+\begin{proof}
+For any tensor $a$ with multi-index $i$,
+\begin{align*}
+\norm{\frac{\partial}{\partial\theta}\norm a_{2}^{2}}_{2}^{2} & =\sum_{r=1}^{D}\left(\frac{\partial}{\partial\theta_{r}}\norm a_{2}^{2}\right)^{2}\\
+ & =\sum_{r=1}^{D}\left(\frac{\partial}{\partial\theta_{r}}\sum_{i=1}^{D_{A}}a_{i}^{2}\right)^{2}\\
+ & =\sum_{r=1}^{D}\left(2\sum_{i=1}^{D_{A}}a_{i}\frac{\partial a_{i}}{\partial\theta_{r}}\right)^{2}\\
+ & \le4\sum_{r=1}^{D}\sum_{i=1}^{D_{A}}a_{i}^{2}\sum_{i=1}^{D_{A}}\left(\frac{\partial a_{i}}{\partial\theta_{r}}\right)^{2}\textrm{ (Cauchy-Schwartz)}\\
+ & =4\sum_{i=1}^{D_{A}}a_{i}^{2}\sum_{r=1}^{D}\sum_{i=1}^{D_{A}}\left(\frac{\partial a_{i}}{\partial\theta_{r}}\right)^{2}\\
+ & =4\norm a_{2}^{2}\norm{\frac{\partial a}{\partial\theta}}_{2}^{2}.
+\end{align*}
+
+Consequently,
+\begin{align*}
+\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}}_{2}^{2} & =\norm{\frac{1}{2\norm{a\left(\theta\right)}_{2}}\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}^{2}}_{2}^{2}\\
+ & =\frac{1}{4\norm{a\left(\theta\right)}_{2}^{2}}\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}^{2}}_{2}^{2}\\
+ & \le\frac{4\norm{a\left(\theta\right)}_{2}^{2}}{4\norm{a\left(\theta\right)}_{2}^{2}}\norm{\frac{\partial}{\partial\theta}a\left(\theta\right)}_{2}^{2}\\
+ & =\norm{\frac{\partial a\left(\theta\right)}{\partial\theta}}_{2}^{2}.
+\end{align*}
+So for any $\theta_{1},\theta_{2}\in\Omega_{\theta}$,
+\begin{align*}
+\left|\mbe\left[\norm{a\left(\theta_{1}\right)}_{2}\right]-\mbe\left[\norm{a\left(\theta_{2}\right)}_{2}\right]\right| & \le\mbe\left[\left|\norm{a\left(\theta_{1}\right)}_{2}-\norm{a\left(\theta_{2}\right)}_{2}\right|\right]\\
+ & \le\mbe\left[\left(\sup_{\theta\in\Omega_{\theta}}\norm{\frac{\partial}{\partial\theta}\norm{a\left(\theta\right)}_{2}}_{2}\right)\right]\norm{\theta_{1}-\theta_{2}}_{2}\textrm{ (}\theta\textrm{ is not random)}\\
+ & \le\mbe\left[\left(\sup_{\theta\in\Omega_{\theta}}\norm{\frac{\partial a\left(\theta\right)}{\partial\theta}}_{2}\right)\right]\norm{\theta_{1}-\theta_{2}}_{2}\\
+ & \le\sqrt{\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{\frac{\partial a\left(\theta\right)}{\partial\theta}}_{2}^{2}\right]}\norm{\theta_{1}-\theta_{2}}_{2}.
+\end{align*}
+The result follows. Note that the bound still holds (though vacuously)
+if $\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{\frac{\partial a\left(\theta\right)}{\partial\theta}}_{2}^{2}\right]$
+is infinite.
+\end{proof}
+\begin{prop}
+\label{prop:assumptions_hold}Let $\Omega_{\theta}$ be a compact
+set. Let $g_{n}\left(\theta\right)$ be twice continuously differentiable
+IID random functions. Define
+\begin{align*}
+h_{n}\left(\theta\right) & :=\frac{\partial g{}_{n}\left(\theta\right)}{\partial\theta}\\
+r_{n}\left(\theta\right) & :=\frac{\partial^{2}g{}_{n}\left(\theta\right)}{\partial\theta\partial\theta},
+\end{align*}
+where $r_{n}\left(\theta\right)$ is a $D\times D\times D$ tensor.
+Assume that
+
+1a) $\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]<\infty$;
+
+1b) $\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{h_{n}\left(\theta\right)}_{2}^{2}\right]<\infty$;
+
+1c) $\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]<\infty;$
+
+2) $\mbe\left[h_{n}\left(\theta\right)\right]$ is non-singular for
+all $\theta\in\Omega_{\theta}$;
+
+3) We can exchange expectation and differentiation.
+
+Then $\lim_{N\rightarrow\infty}P\left(\textrm{\coreassum\ hold}\right)=1.$
+\end{prop}
+%
+\begin{proof}
+    %
+The proof follows from Theorems 9.1 and
+9.2 of \citet{keener:2011:theoretical}. We will first show that the expected values of
+the needed functions satisfy \coreassum, and then that the sample versions
+converge uniformly.
+
+By Jensen's inequality,
+\begin{align*}
+\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{2}\right] & =\mbe\left[\sqrt{\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{2}^{2}}\right]\le\sqrt{\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]}.
+\end{align*}
+Also, for the $i^{th}$ component of $g_{n}\left(\theta\right)$
+\begin{align*}
+\mbe\left[\sup_{\theta\in\Omega_{\theta}}\left|g_{n,i}\left(\theta\right)\right|\right] & \le\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{\infty}\right]\le\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{g_{n}\left(\theta\right)}_{2}\right].
+\end{align*}
+By Theorem 9.1 of \citet{keener:2011:theoretical}, $\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]$
+, $\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}\right]$, and $\mbe\left[g_{n}\left(\theta\right)\right]$
+are continuous functions of $\theta$, and because $\Omega_{\theta}$
+is compact, they are each bounded. Similar reasoning applies to $h_{n}\left(\theta\right)$
+and $r_{n}\left(\theta\right)$. Consequently we can define
+\begin{align*}
+\sup_{\theta\in\Omega_{\theta}}\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}^{2}\right] & =:Q_{g}^{2}<\infty\\
+\sup_{\theta\in\Omega_{\theta}}\mbe\left[\norm{h_{n}\left(\theta\right)}_{2}^{2}\right] & =:Q_{h}^{2}<\infty.
+\end{align*}
+Below, these constants will be used to satisfy \assuref{paper_smoothness}
+and \assuref{paper_bounded} with high probability.
+
+Because $\Omega_{\theta}$ is compact, $\mbe\left[h_{n}\left(\theta\right)\right]$
+is continuous, $\mbe\left[h_{n}\left(\theta\right)\right]$ is non-singular,
+and the operator norm is a continuous function of $\mbe\left[h_{n}\left(\theta\right)\right]$,
+we can also define
+\begin{align*}
+\sup_{\theta\in\Omega_{\theta}}\norm{\mbe\left[h_{n}\left(\theta\right)\right]^{-1}}_{op} & =:Q_{op}<\infty.
+\end{align*}
+Below, this constant be used to satisfy \assuref{paper_hessian}
+with high probability.
+
+Finally, we turn to the Lipschitz condition. \lemref{lipschitz_helper}
+implies that
+\begin{align*}
+\left|\mbe\left[\norm{h_{n}\left(\theta_{1}\right)}_{2}\right]-\mbe\left[\norm{h_{n}\left(\theta_{2}\right)}_{2}\right]\right| & \le\sqrt{\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]}\norm{\theta_{1}-\theta_{2}}_{2}.
+\end{align*}
+Define
+\begin{align*}
+\Lambda_{h} & =\sqrt{\mbe\left[\sup_{\theta\in\Omega_{\theta}}\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]},
+\end{align*}
+so that we have shown that $\mbe\left[\norm{h_{n}\left(\theta\right)}_{2}\right]$
+is Lipschitz in $\Omega_{\theta}$ with constant $\Lambda_{h}$, which
+is finite by assumption.
+
+We have now shown, essentially, that the expected versions of the
+quantities we wish to control satisfy \coreassum with $N=1$.
+We now need to show that the sample versions satisfy \coreassum
+with high probability, which will follow from the fact that the sample
+versions converge uniformly to their expectations by
+Theorem 9.2 of \citet{keener:2011:theoretical}.
+
+First, observe that \assuref{paper_smoothness} holds with probability
+one by assumption. For the remaining assumption choose an $\epsilon>0$,
+and define
+\begin{align*}
+\constg & :=\sqrt{Q_{g}^{2}+\epsilon}\\
+\consth & :=\sqrt{Q_{h}^{2}+\epsilon}\\
+\constop & :=2Q_{op}\\
+\liph & :=\sqrt{D^{4}\Lambda_{h}^{2}+\epsilon}.
+\end{align*}
+
+By \citet{keener:2011:theoretical} Theorem 9.2,
+\begin{align*}
+\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\sum_{n=1}^{N}\norm{g_{n}\left(\theta\right)}_{2}^{2}-\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]\right| & \xrightarrow[N\rightarrow\infty]{p}0.
+\end{align*}
+Because
+\begin{align*}
+\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\sum_{n=1}^{N}\norm{g_{n}\left(\theta\right)}_{2}^{2}\right| & >Q_{g}^{2}+\epsilon\ge\sup_{\theta\in\Omega_{\theta}}\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]+\epsilon\Rightarrow\\
+\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\sum_{n=1}^{N}\norm{g_{n}\left(\theta\right)}_{2}^{2}-\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]\right| & >\epsilon,
+\end{align*}
+
+we have
+\begin{align*}
+ & P\left(\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\sum_{n=1}^{N}\norm{g_{n}\left(\theta\right)}_{2}^{2}\right|\ge Q_{g}^{2}+\epsilon\right)\le\\
+ & \quad P\left(\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\sum_{n=1}^{N}\norm{g_{n}\left(\theta\right)}_{2}^{2}-\mbe\left[\norm{g_{n}\left(\theta\right)}_{2}^{2}\right]\right|\le\epsilon\right),
+\end{align*}
+so
+\begin{align*}
+P\left(\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\sum_{n=1}^{N}\norm{g_{n}\left(\theta\right)}_{2}^{2}\right|\ge\constg^{2}\right) & \xrightarrow[N\rightarrow\infty]{}0.
+\end{align*}
+An analogous argument holds for $\frac{1}{N}\norm{h_{n}\left(\theta\right)}_{2}^{2}$.
+Consequently, $P\left(\textrm{Assumption \ref{assu:paper_bounded} holds}\right)\xrightarrow[N\rightarrow\infty]{}1$.
+
+We now consider \assuref{paper_hessian}. Again, by \citet{keener:2011:theoretical} Theorem 9.2
+applied to each element of the matrix $h_{n}\left(\theta\right)$,
+using a union bound over each of the $D^{2}$ entries,
+\begin{align*}
+\sup_{\theta\in\Omega_{\theta}}\norm{\frac{1}{N}\sum_{n=1}^{N}h_{n}\left(\theta\right)-\mbe\left[h_{n}\left(\theta\right)\right]}_{1} & \xrightarrow[N\rightarrow\infty]{p}0.
+\end{align*}
+By the converse of \proprefref{operator_norm_continuity}, because
+$\norm{\mbe\left[h_{n}\left(\theta\right)\right]^{-1}}_{op}\le Q_{op}$,
+\begin{align*}
+\norm{\left(\frac{1}{N}\sum_{n=1}^{N}h_{n}\left(\theta\right)\right)^{-1}}_{op} & >2Q_{op}=\constop\Rightarrow\\
+\norm{\frac{1}{N}\sum_{n=1}^{N}h_{n}\left(\theta\right)-\mbe\left[h_{n}\left(\theta\right)\right]}_{1} & >\frac{1}{2}Q_{op}^{-1}.
+\end{align*}
+Consequently,
+\begin{align*}
+ & P\left(\norm{\left(\frac{1}{N}\sum_{n=1}^{N}h_{n}\left(\theta\right)\right)^{-1}}_{op}\ge\constop\right)\le\\
+ & \quad P\left(\norm{\frac{1}{N}\sum_{n=1}^{N}h_{n}\left(\theta\right)-\mbe\left[h_{n}\left(\theta\right)\right]}_{1}\right)\xrightarrow[N\rightarrow\infty]{p}0,
+\end{align*}
+and $P\left(\textrm{Assumption \ref{assu:paper_hessian} holds}\right)\xrightarrow[N\rightarrow\infty]{}1.$
+
+Finally, applying \lemref{lipschitz_helper} to $\frac{1}{\sqrt{N}}\norm{h\left(\theta_{2}\right)}_{2}$,
+\begin{align*}
+\left|\frac{1}{\sqrt{N}}\norm{h\left(\theta_{1}\right)}_{2}-\frac{1}{\sqrt{N}}\norm{h\left(\theta_{2}\right)}_{2}\right| & \le\sup_{\theta\in\Omega_{\theta}}\norm{\frac{\partial}{\partial\theta}\frac{1}{\sqrt{N}}\norm{h\left(\theta\right)}_{2}}_{2}\norm{\theta_{1}-\theta_{2}}_{2}\\
+ & \le\frac{D^{2}}{\sqrt{N}}\sup_{\theta\in\Omega_{\theta}}\norm{r\left(\theta\right)}_{2}\norm{\theta_{1}-\theta_{2}}_{2}\\
+ & =D^{2}\sqrt{\sup_{\theta\in\Omega_{\theta}}\frac{1}{N}\norm{r\left(\theta\right)}_{2}^{2}}\norm{\theta_{1}-\theta_{2}}_{2}.
+\end{align*}
+Consequently,
+\begin{align*}
+\left|\frac{1}{\sqrt{N}}\norm{h\left(\theta_{1}\right)}_{2}-\frac{1}{\sqrt{N}}\norm{h\left(\theta_{2}\right)}_{2}\right| & \ge\liph\norm{\theta_{1}-\theta_{2}}_{2}\Rightarrow\\
+D^{2}\sqrt{\sup_{\theta\in\Omega_{\theta}}\frac{1}{N}\norm{r\left(\theta\right)}_{2}^{2}} & \ge\liph\Rightarrow\\
+\sup_{\theta\in\Omega_{\theta}}\frac{1}{N}\norm{r\left(\theta\right)}_{2}^{2}-\sup_{\theta\in\Omega_{\theta}}\mbe\left[\norm{r_{n}\left(\theta\right)}_{2}^{2}\right] & \ge\frac{\liph^{2}}{D^{4}}-\sup_{\theta\in\Omega_{\theta}}\mbe\left[\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]\Rightarrow\\
+\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\norm{r\left(\theta\right)}_{2}^{2}-\mbe\left[\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]\right| & \ge\frac{\liph^{2}}{D^{4}}-\Lambda_{h}^{2}=\epsilon.
+\end{align*}
+However, again by \citet{keener:2011:theoretical} Theorem 9.2,
+\begin{align*}
+\sup_{\theta\in\Omega_{\theta}}\left|\frac{1}{N}\norm{r\left(\theta\right)}_{2}^{2}-\mbe\left[\norm{r_{n}\left(\theta\right)}_{2}^{2}\right]\right| & \xrightarrow[N\rightarrow\infty]{p}0,
+\end{align*}
+so $P\left(\textrm{Assumption \ref{assu:paper_lipschitz} holds}\right)\xrightarrow[N\rightarrow\infty]{}1$.
+\end{proof}

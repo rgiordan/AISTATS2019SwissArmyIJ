@@ -1,0 +1,145 @@
+\begin{thebibliography}{23}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agarwal et~al.(2017)Agarwal, Bullins, and Hazan]{agarwal:2016:lissa}
+N.~Agarwal, B.~Bullins, and E.~Hazan.
+\newblock Second-order stochastic optimization in linear time.
+\newblock \emph{Journal of Machine Learning Research}, 2017.
+
+\bibitem[Baydin et~al.(2017)Baydin, Pearlmutter, Radul, and
+  Siskind]{baydin:2015:automatic}
+A.~Baydin, B.~Pearlmutter, A.~Radul, and J.~Siskind.
+\newblock Automatic differentiation in machine learning: a survey.
+\newblock \emph{Journal of Machine Learning Research}, 18\penalty0
+  (153):\penalty0 1--153, 2017.
+
+\bibitem[Beirami et~al.(2017)Beirami, Razaviyayn, Shahrampour, and
+  Tarokh]{BeiramiRST17}
+A.~Beirami, M.~Razaviyayn, S.~Shahrampour, and V.~Tarokh.
+\newblock On optimal generalizability in parametric learning.
+\newblock In \emph{Advances in Neural Information Processing Systems (NIPS)},
+  pages 3458--3468, 2017.
+
+\bibitem[Clarke(1983)]{clarke:1983:uniqueness}
+B.~Clarke.
+\newblock Uniqueness and {Fr{\'e}chet} differentiability of functional
+  solutions to maximum likelihood type equations.
+\newblock \emph{The Annals of Statistics}, 11\penalty0 (4):\penalty0
+  1196--1205, 1983.
+
+\bibitem[Efron(1982)]{efron:1982:jackknife}
+B.~Efron.
+\newblock \emph{The Jackknife, the Bootstrap, and Other Resampling Plans},
+  volume~38.
+\newblock Society for Industrial and Applied Mathematics, 1982.
+
+\bibitem[Fernholz(1983)]{fernholz:1983:mises}
+L.~Fernholz.
+\newblock \emph{{Von Mises} Calculus for Statistical Functionals}, volume~19.
+\newblock Springer Science \& Business Media, 1983.
+
+\bibitem[Hall(2013)]{hall:2013:bootstrap}
+P.~Hall.
+\newblock \emph{The Bootstrap and {Edgeworth} Expansion}.
+\newblock Springer Science \& Business Media, 2013.
+
+\bibitem[Jaeckel(1972)]{jaeckel:1972:infinitesimal}
+L.~Jaeckel.
+\newblock The infinitesimal jackknife, memorandum.
+\newblock Technical report, MM 72-1215-11, Bell Lab. Murray Hill, NJ, 1972.
+
+\bibitem[Jones et~al.(2001)Jones, Oliphant, Peterson, et~al.]{scipy}
+E.~Jones, T.~Oliphant, P.~Peterson, et~al.
+\newblock {SciPy}: Open source scientific tools for {Python}, 2001.
+\newblock URL \url{http://www.scipy.org/}.
+
+\bibitem[Keener(2011)]{keener:2011:theoretical}
+R.~W. Keener.
+\newblock \emph{Theoretical Statistics: Topics for a Core Course}.
+\newblock Springer, 2011.
+
+\bibitem[Koh and Liang(2017)]{KohL17}
+P.~W. Koh and P.~Liang.
+\newblock Understanding black-box predictions via influence functions.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2017.
+
+\bibitem[Luan and Li(2003)]{Luan:2003:clustering}
+Y.~Luan and H.~Li.
+\newblock Clustering of time-course gene expression data using a mixed-effects
+  model with {B}-splines.
+\newblock \emph{Bioinformatics}, 19\penalty0 (4):\penalty0 474--482, 2003.
+
+\bibitem[Maclaurin et~al.(2015)Maclaurin, Duvenaud, and
+  Adams]{maclaurin:2015:autograd}
+D.~Maclaurin, D.~Duvenaud, and R.~P. Adams.
+\newblock Autograd: Effortless gradients in numpy.
+\newblock In \emph{International Conference on Machine Learning (ICML) AutoML
+  Workshop}, 2015.
+
+\bibitem[Mises(1947)]{mises:1947:asymptotic}
+R.~Mises.
+\newblock On the asymptotic distribution of differentiable statistical
+  functions.
+\newblock \emph{The Annals of Mathematical Statistics}, 18\penalty0
+  (3):\penalty0 309--348, 1947.
+
+\bibitem[Rad and Maleki(2018)]{RadM18}
+K.~R. Rad and A.~Maleki.
+\newblock {A scalable estimate of the extra-sample prediction error via
+  approximate leave-one-out}.
+\newblock \emph{arXiv Preprint}, January 2018.
+
+\bibitem[Reeds(1978)]{reeds:1978:jackknifing}
+J.~A. Reeds.
+\newblock Jackknifing maximum likelihood estimates.
+\newblock \emph{The Annals of Statistics}, pages 727--739, 1978.
+
+\bibitem[Rosset and Tibshirani(2018)]{rosset:2018:fixed}
+S.~Rosset and R.~J. Tibshirani.
+\newblock From fixed-{X} to random-{X} regression: Bias-variance
+  decompositions, covariance penalties, and prediction error estimation.
+\newblock \emph{Journal of the American Statistical Association}, 2018.
+
+\bibitem[Schott(2016)]{schott:2016:matrix}
+J.~Schott.
+\newblock \emph{Matrix Analysis for Statistics}.
+\newblock John Wiley \& Sons, 2016.
+
+\bibitem[Shao(1993)]{shao:1993:jackknifemestimator}
+J.~Shao.
+\newblock Differentiability of statistical functionals and consistency of the
+  jackknife.
+\newblock \emph{The Annals of Statistics}, pages 61--75, 1993.
+
+\bibitem[Shao and Tu(2012)]{shao:2012:jackknife}
+J.~Shao and D.~Tu.
+\newblock \emph{The Jackknife and Bootstrap}.
+\newblock Springer Series in Statistics, 2012.
+
+\bibitem[Shoemaker et~al.(2015)Shoemaker, Fukuyama, Eisfeld, Zhao, Kawakami,
+  Sakabe, Maemura, Gorai, Katsura, Muramoto, Watanabe, Watanabe, Fuji,
+  Matsuoka, Kitano, and Kawaoka]{shoemaker:2015:ultrasensitive}
+J.~E. Shoemaker, S.~Fukuyama, A.~J. Eisfeld, D.~Zhao, E.~Kawakami, S.~Sakabe,
+  T.~Maemura, T.~Gorai, H.~Katsura, Y.~Muramoto, S.~Watanabe, T.~Watanabe,
+  K.~Fuji, Y.~Matsuoka, H.~Kitano, and Y.~Kawaoka.
+\newblock An ultrasensitive mechanism regulates influenza virus-induced
+  inflammation.
+\newblock \emph{PLoS Pathogens}, 11\penalty0 (6):\penalty0 1--25, 2015.
+
+\bibitem[Wager et~al.(2014)Wager, Hastie, and Efron]{wager:2014:confidence}
+S.~Wager, T.~Hastie, and B.~Efron.
+\newblock Confidence intervals for random forests: The jackknife and the
+  infinitesimal jackknife.
+\newblock \emph{The Journal of Machine Learning Research}, 15\penalty0
+  (1):\penalty0 1625--1651, 2014.
+
+\bibitem[Wright and Nocedal(1999)]{wright:1999:optimization}
+S.~Wright and J.~Nocedal.
+\newblock \emph{Numerical Optimization}, volume~35.
+\newblock 1999.
+
+\end{thebibliography}
