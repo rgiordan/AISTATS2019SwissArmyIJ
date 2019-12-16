@@ -11,6 +11,9 @@
 We begin by stating two general propositions that will be useful.
 First, we show that a version of Cauchy-Schwartz can be applied to
 weighted sums of tensors.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{prop}
 \label{propref:tensor_cauchy_schwartz}Tensor array version of H{\"o}lder's
 inequality. Let $w$ be an array of scalars and let $a=\left(a_{1},...,a_{N}\right)$
@@ -27,6 +30,7 @@ In particular, with $p=q=2$,
 \norm{\frac{1}{N}\sum_{n=1}^{N}w_{n}a_{n}}_{1} & \le\sqrt{D_{A}}\frac{\norm w_{2}}{\sqrt{N}}\frac{\norm a_{2}}{\sqrt{N}}.
 \end{align*}
 \end{prop}
+%
 \begin{proof}
 The conclusion follows from the ordinary H{\"o}lder's inequality
 applied term-wise to $n$ and Jensen's inequality applied to the indices
@@ -42,20 +46,28 @@ $i$.
  & =\frac{D_{A}^{\frac{1}{p}}}{N}\norm w_{p}\norm a_{q}.
 \end{align*}
 \end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %
 Next, we prove a relationship between the term-wise difference between
 matrices and the difference between their operator norms. It is well-known
 that the minimum eigenvalue of a non-singular matrix is continuous
 in the entries of the matrix. In the next proposition, we quantify
 this continuity for the $L_{1}$ norm.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{prop}
-\label{propref:operator_norm_continuity}Let $A$ and $B$ be two
+%\label{propref:operator_norm_continuity}
+Let $A$ and $B$ be two
 matrices. Let $\norm{A^{-1}}_{op}\le\constop$ for some finite $\constop$,
 Then
 \begin{align*}
 \norm{A-B}_{1}\le\frac{1}{2}\constop[-1] & \quad\Rightarrow\quad\norm{B^{-1}}_{op}\le2\constop.
 \end{align*}
 \end{prop}
+%
 \begin{proof}
 We will use \citet[Theorem 5.20]{schott:2016:matrix} and the associated
 discussion, which states the following general result. Take any matrix
@@ -83,7 +95,79 @@ so we can apply \eqref{matrix_norm_continuity}. Then
 \end{align*}
 \end{proof}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{prop}
+\label{propref:operator_norm_continuity}
+%
+Let $A$ and $B$ be two square matrices of the same size.
+Let $\norm{A^{-1}}_{op}\le \constop$ for some finite $\constop$, and  Then
+%
+\begin{align*}
+\norm{A-B}_{1}\le \frac{1}{2} (\constop)^{-1} &
+    \quad\Rightarrow\quad\norm{B^{-1}}_{op} \le 2 \constop.
+\end{align*}
+%
+\begin{proof}
+%
+We will use the results stated in Theorem 4.29 of \citet{schott:2016:matrix} and
+the associated discussion in Example 4.14, which establish the following result.
+Let $A$ be a square, nonsigular matrix, and let $I$ be the identity matrix of
+the same size.  Let $\norm{\cdot}$ denote any matrix norm satisfying $\norm{I} =
+1$.  Let $D$ be a matrix of the same size as $A$ satisfying
+%
+\begin{align}\eqlabel{ab_matrix_condition}
+\norm{A^{-1}} \norm{D} \le 1.
+\end{align}
+%
+Then
+%
+\begin{align}\label{eq:matrix_norm_continuity}
+    \norm{A^{-1} - (A + D)^{-1}} \le
+    \frac{\norm{A^{-1}}\norm{D}}{1 - \norm{A^{-1}\norm{D}}} \norm{A^{-1}}.
+\end{align}
+%
+We will apply \eqref{matrix_norm_continuity} using the operator norm
+$\norm{\cdot}_{op}$, for which $\norm I_{op}=1$ and with $D := B - A$.
+Because $\norm{A^{-1}}_{op}\le \constop$, $A$ is invertible.
+
+Assume that $\norm{A-B}_{2}\le r (\constop)^{-1}$.  First, note that
+%
+\begin{align}\label{eq:ab_matrix_condition_fulfilled}
+\norm{A^{-1}}_{op} \norm{D}_{op} &=
+    \norm{A^{-1}}_{op}\norm{B - A}_{op} \nonumber \\
+&\le\norm{A^{-1}}_{op}\norm{B - A}_{1}
+    & \textrm{(ordering of matrix norms)}\nonumber \\
+ & \le \constop \frac{1}{2} (\constop)^{-1}
+    & \textrm{(by assumption)} \nonumber \\
+&= \frac{1}{2}  < 1,
+\end{align}
+%
+so \eqref{ab_matrix_condition} is satisfied and we can apply
+\eqref{matrix_norm_continuity}. Then
+%
+\begin{align*}
+\norm{B^{-1}}_{op}
+ & \le \norm{B^{-1}-A^{-1}}_{op} + \norm{A^{-1}}_{op}
+    & \textrm{ (triangle inequality)}\\
+ & \le \frac{\norm{A^{-1}}_{op}\norm{B - A}_{op}}
+            {1 - \norm{A^{-1}}_{op}\norm{B - A}_{op}}
+        \norm{A^{-1}}_{op} + \norm{A^{-1}}_{op}
+     & \textrm{(\eqref{matrix_norm_continuity})}\\
+ & \le \frac{\frac{1}{2}}{1-\frac{1}{2}}\norm{A^{-1}}_{op} +
+    \norm{A^{-1}}_{op}
+    &\textrm{(\eqref{ab_matrix_condition_fulfilled})} \\
+ & \le 2 \constop.&\textrm{(by assumption)}
+\end{align*}
+\end{proof}
+%
+\end{prop}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
