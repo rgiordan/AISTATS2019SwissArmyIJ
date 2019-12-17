@@ -135,10 +135,10 @@ Taylor series expansions of vector-valued functions.}
 \begin{prop}
 \label{propref:taylor_series_remainder}
 %
-For any $\theta \in \Omega_{\theta}$ and any $w \in W$,
+For any $\theta \in \Omega_{\theta}$ and any $\tilde{w} \in W$,
 %
 \begin{align*}
-G(\theta, w) - G(\thetaone, w) =&
+G(\theta, \tilde{w}) - G(\thetaone, \tilde{w}) =&
     \left(\int_0^1 H(\thetaone + t (\theta - \thetaone), w) dt\right)
     \left(\theta - \thetaone\right)
 \end{align*}
@@ -147,11 +147,12 @@ G(\theta, w) - G(\thetaone, w) =&
 %
 \begin{proof}
 %
-Let $G_d(\theta, w)$ denote the $d$-th component of the vector $G(\theta, w)$,
-and define the function $f_d(t) := G_d(\thetaone + t (\thetaone - \theta), w)$.
-The proposition follows by taking the integral remainder form of the zero-th
-order Taylor series expansion of $f_d(t)$ around $t=0$  \citep[Appendix
-B.2]{dudley:2018:analysis}, and stacking the result into a vector.
+Let $G_d(\theta, \tilde{w})$ denote the $d$-th component of the vector
+$G(\theta, \tilde{w})$, and define the function $f_d(t) := G_d(\thetaone + t
+(\thetaone - \theta), \tilde{w})$. The proposition follows by taking the
+integral remainder form of the zero-th order Taylor series expansion of $f_d(t)$
+around $t=0$ \citep[Appendix B.2]{dudley:2018:analysis}, and stacking the result
+into a vector.
 %
 \end{proof}
 
@@ -184,8 +185,8 @@ For a fixed weight, $w$, define the Hessian integral
 \begin{lem}\label{lem:hess_integral_invertible}
 %
 If, for some domain $D$ and some constant $C$, $\sup_{\theta \in D}
-\norm{H(\theta, w)^{-1}}_{op} < C$, then
-$\sup_{\theta \in D} \norm{\hint(\theta, w)^{-1}}_{op} < C$.
+\norm{H(\theta, w)^{-1}}_{op} \le C$, then
+$\sup_{\theta \in D} \norm{\hint(\theta, w)^{-1}}_{op} \le C$.
 %
 \end{lem}
 
@@ -223,6 +224,7 @@ The result follows.
 
 We now prove some useful consequences of our assumptions. The proof
 roughly proceeds for all $w\in W_{\delta}$ by the following steps:
+%
 \begin{enumerate}
 \item When $\delta$ is small we can make $\norm{{{\thetaw}}-\thetaone}_{2}$
 small. (\lemref{theta_difference_bound} below.)
@@ -236,44 +238,82 @@ is uniformly non-singular. (\lemref{continuous_invertibility} below.)
 is uniformly non-singular we can control the error in $\thetaij-\thetaw$
 in terms of $\delta$. (\thmrefref{taylor_error_first} below.)
 \end{enumerate}
+%
 We begin by showing that the difference between $\thetaw$ and $\thetaone$
 for $w\in W_{\delta}$ can be made small by making $\delta$ from
 \condref{paper_uniform_bound} small.
 
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lem}
 \label{lem:theta_difference_bound}Small parameter changes. Under
 \globalassum and \condref{paper_uniform_bound},
 \begin{align*}
-\textrm{for all }w\in W_{\delta},\quad\norm{{{\thetaw}}-\thetaone}_{2} & \le\constop\delta.
+\textrm{for all }w\in W_{\delta},\quad\norm{{{\thetaw}}-\thetaone}_{2} &
+    \le\constop\delta.
 \end{align*}
 \end{lem}
+%
 \begin{proof}
-By a first-order Taylor expansion in $\theta$, for some $\tilde{\theta}$
-such that $\norm{\tilde{\theta}-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+%
+Applying \proprefref{taylor_series_remainder} with $\theta = \thetaw$
+and $\tilde{w} = \onevec$ gives
+%
+%
 \begin{align*}
-G\left(\thetaw,\onevec\right) & =G\left(\thetaone,\onevec\right)+H\left(\tilde{\theta},\onevec\right)\left(\thetaw-\thetaone\right).
+G\left(\thetaw,\onevec\right) &
+    =G\left(\thetaone,\onevec\right) +
+    \hint\left(\thetaw, \onevec\right)
+    \left(\thetaw-\thetaone\right).
 \end{align*}
-By \assuref{paper_hessian}, $H\left(\tilde{\theta},\onevec\right)$
-is non-singular. A little manipulation, together with the fact that
+%
+By \assuref{paper_hessian} and
+% $\sup_{\theta \in \Omega_\theta}
+% \norm{H(\theta,\onevec)^{-1}} \le \constop$, so by
+\lemref{hess_integral_invertible},
+$\sup_{\theta \in \Omega_\theta}
+\norm{\hint(\theta,\onevec)^{-1}} \le \constop$.
+%
+In particular, $\hint(\theta,\onevec)$ is non-singular.
+A little manipulation, together with the fact that
 $G\left(\thetaw,w\right)=G\left(\thetaone,\onevec\right)=0$ gives
+%
 \begin{align*}
-G\left(\thetaw,\onevec\right)-G\left(\thetaw,w\right) & =H\left(\tilde{\theta},\onevec\right)\left(\thetaw-\thetaone\right)\Rightarrow\\
-\thetaw-\thetaone & =H\left(\tilde{\theta},\onevec\right)^{-1}\left(G\left(\thetaw,\onevec\right)-G\left(\thetaw,w\right)\right).
+\thetaw-\thetaone & =
+    \hint\left(\thetaw,\onevec\right)^{-1}
+    \left(G\left(\thetaw, \onevec\right) - G\left(\thetaw,w\right)\right).
 \end{align*}
-Applying \condref{paper_uniform_bound} and \assuref{paper_hessian},
+%
+Taking the norm of both sides gives
+%
 \begin{align*}
-\norm{{{\thetaw}}-\thetaone}_{2} & =\norm{H\left(\tilde{\theta},\onevec\right)^{-1}\left(G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)\right)}_{2}\\
- & \le\norm{H\left(\tilde{\theta},\onevec\right)^{-1}}_{op}\norm{\left(G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)\right)}_{2}\\
- & \le\sup_{\theta\in\Omega_{\theta}}\norm{H\left(\theta,\onevec\right)^{-1}}_{op}\norm{\left(G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)\right)}_{2}\\
- & \le\constop\norm{G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
- & \le\constop\norm{G\left({{\thetaw}},\onevec\right)-G\left({{\thetaw}},w\right)}_{1}\textrm{ (relation between norms)}\\
- & \le\constop\sup_{\theta\in\Omega_{\theta}}\norm{G\left(\theta,\onevec\right)-G\left(\theta,w\right)}_{1}\\
- & \le\constop\delta.\textrm{ (Condition \ref{cond:paper_uniform_bound}).}
+\norm{{{\thetaw}}-\thetaone}_{2} & =
+    \norm{\hint\left(\thetaw,\onevec\right)^{-1}
+        \left(G\left({{\thetaw}},\onevec\right) -
+             G\left({{\thetaw}},w\right)\right)}_{2}\\
+& \le\norm{\hint\left(\thetaw,\onevec\right)^{-1}}_{op}
+    \norm{\left(G\left({{\thetaw}},\onevec\right) -
+                G\left({{\thetaw}},w\right)\right)}_{2}\\
+& \le\constop\norm{G\left({{\thetaw}},\onevec\right) -
+                   G\left({{\thetaw}},w\right)}_{2}
+    \textrm{ (Lemma \ref{lem:hess_integral_invertible})}\\
+& \le\constop\norm{
+    G\left({{\thetaw}},\onevec\right) -
+    G\left({{\thetaw}},w\right)}_{1}\textrm{ (relation between norms)}\\
+& \le\constop\sup_{\theta\in\Omega_{\theta}}
+    \norm{G\left(\theta,\onevec\right)-G\left(\theta,w\right)}_{1}\\
+& \le\constop\delta.\textrm{ (Condition \ref{cond:paper_uniform_bound}).}
+%
 \end{align*}
+%
 \end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%
 %
 Because we will refer to it repeatedly, we give the set of $\theta$
 defined in \lemref{theta_difference_bound} a name.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{defn}
 For a given $\delta$, define the region around $\thetaone$ given
 by \lemref{theta_difference_bound} as
@@ -282,6 +322,8 @@ by \lemref{theta_difference_bound} as
 \thetadeltaball & :=\left\{ \theta:\norm{\theta-\thetaone}_{2}\le\constop\delta\right\} \bigcap\Omega_{\theta}.
 \end{align*}
 \end{defn}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 In other words, \lemref{theta_difference_bound} states that \condref{paper_uniform_bound}
 implies $\thetaw\in\thetadeltaball$ when $w\in W_{\delta}$.
