@@ -206,7 +206,7 @@ By definition of the operator norm,
 \ge& C^{-1}.
 \end{align*}
 %
-The result follows.
+The result follows by inverting both sides of the inequality.
 %
 \end{proof}
 
@@ -522,36 +522,114 @@ when $\delta\le\deltasize$,
 \end{thm}
 %
 \begin{proof}
-By a one-term Taylor series expansion of $G\left(\thetaw,w\right)=0$
-in $\theta$ around $\thetaone$, we have, for some $\thetawiggle$
-such that $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+%
+Applying \proprefref{taylor_series_remainder} with $\theta = \thetaw$ and
+$\tilde{w} = w$, we have
+%
 \begin{align*}
-0=G\left(\thetaw,w\right) & =G\left(\thetaone,w\right)+H\left(\thetawiggle,w\right)\left(\thetaw[w]-\thetaone\right).
+0=G\left(\thetaw,w\right) & =
+    G\left(\thetaone, w\right)
+    +\hint\left(\thetaw, w\right) \left(\thetaw[w] - \thetaone\right).
 \end{align*}
-Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound}
-implies that $\thetaw\in\thetadeltaball$. Because $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
-$\thetawiggle\in\thetadeltaball$ as well. Because $\thetawiggle\in\thetadeltaball$,
-\lemref{continuous_invertibility} implies that $H\left(\thetawiggle,w\right)$
-is invertible, so we can solve for $\thetaw-\thetaone$.
+%
+Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound} implies that
+$\thetaw\in\thetadeltaball$ so, \lemref{continuous_invertibility}
+and \lemref{hess_integral_invertible} implies that
+$\hint\left(\thetaw,w\right)$ is invertible and we can solve for
+$\thetaw-\thetaone$.
+%
 \begin{align*}
-\thetaw[w]-\thetaone & =-H\left(\thetawiggle,w\right)^{-1}G\left(\thetaone,w\right)\\
- & =\left(-H\left(\thetawiggle,w\right)^{-1}+H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetaone,\onevec\right)^{-1}\right)G\left(\thetaone,w\right)\\
- & =\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)+\thetaij\left(w\right)-\thetaone.
+\thetaw[w]-\thetaone & =
+    -\hint\left(\thetaw, w\right)^{-1}G\left(\thetaone,w\right)\\
+ & =\left(-\hint\left(\thetawiggle,w\right)^{-1} +
+          H\left(\thetaone,\onevec\right)^{-1} -
+          H\left(\thetaone,\onevec\right)^{-1}\right)
+            G\left(\thetaone,w\right)\\
+ & =\left(H\left(\thetaone,\onevec\right)^{-1} -
+          \hint\left(\thetaw,w\right)^{-1}\right) G\left(\thetaone,w\right)+
+    \thetaij\left(w\right)-\thetaone.
 \end{align*}
-Eliminating $\thetaone$ and taking the supremum of both sides we
-have that
+%
+Eliminating $\thetaone$ and taking the supremum of both sides gives
+%
 \begin{align*}
-\sup_{w\in W_{\delta}} & \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
- & =\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)}_{2}\\
- & =\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)^{-1}\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
- & \le2\constop\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:continuous_invertibility})}\\
- & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{op}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
- & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
+\sup_{w\in W_{\delta}} &
+    \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
+ & =\sup_{w\in W_{\delta}}\norm{
+    \left(H\left(\thetaone,\onevec\right)^{-1} -
+          \hint\left(\theta, w\right)^{-1}\right)
+            G\left(\thetaone,w\right)}_{2}\\
+ & =\sup_{w\in W_{\delta}}\norm{
+    \hint\left(\thetaw, w\right)^{-1}\left(
+        \hint\left(\thetaw,w\right) -
+        H\left(\thetaone,\onevec\right)\right)
+            H\left(\thetaone,\onevec\right)^{-1}
+                G\left(\thetaone,w\right)}_{2}\\
+ & \le2\constop\sup_{w\in W_{\delta}}\norm{
+    \left(\hint\left(\thetaw,w\right) -
+          H\left(\thetaone,\onevec\right)\right)
+            H\left(\thetaone,\onevec\right)^{-1}
+                G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma
+                    \ref{lem:hess_integral_invertible})}\\
+ & \le2\constop\sup_{w\in W_{\delta}}\norm{
+    \hint\left(\thetaw,w\right) -
+    H\left(\thetaone,\onevec\right)}_{op}
+    \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
+ & \le2\constop\sup_{w\in W_{\delta}}\norm{
+    \hint\left(\thetaw,w\right) -
+    H\left(\thetaone,\onevec\right)}_{2}
+    \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}
+    \textrm{ (ordering of matrix norms)}\\
+ % & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
+ & \textrm{ OK need to fix Lemma \ref{lem:gh_difference_from_one}} &\\
  & \le2\constop\constij\delta\sup_{w\in W_{\delta}}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:gh_difference_from_one})}\\
  & \le2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
  & =2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)-G\left(\thetaone,\onevec\right)}_{2}\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
  & \le2\constop[2]\constij\delta^{2}\textrm{ (Condition \ref{cond:paper_uniform_bound})}.
 \end{align*}
+
+
+
+------------------
+
+------------------
+
+------------------
+
+OLD OLD OLD
+
+
+% By a one-term Taylor series expansion of $G\left(\thetaw,w\right)=0$
+% in $\theta$ around $\thetaone$, we have, for some $\thetawiggle$
+% such that $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+% %
+% \begin{align*}
+% 0=G\left(\thetaw,w\right) & =G\left(\thetaone,w\right)+H\left(\thetawiggle,w\right)\left(\thetaw[w]-\thetaone\right).
+% \end{align*}
+% Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound}
+% implies that $\thetaw\in\thetadeltaball$. Because $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
+% $\thetawiggle\in\thetadeltaball$ as well. Because $\thetawiggle\in\thetadeltaball$,
+% \lemref{continuous_invertibility} implies that $H\left(\thetawiggle,w\right)$
+% is invertible, so we can solve for $\thetaw-\thetaone$.
+% \begin{align*}
+% \thetaw[w]-\thetaone & =-H\left(\thetawiggle,w\right)^{-1}G\left(\thetaone,w\right)\\
+%  & =\left(-H\left(\thetawiggle,w\right)^{-1}+H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetaone,\onevec\right)^{-1}\right)G\left(\thetaone,w\right)\\
+%  & =\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)+\thetaij\left(w\right)-\thetaone.
+% \end{align*}
+% Eliminating $\thetaone$ and taking the supremum of both sides we
+% have that
+% \begin{align*}
+% \sup_{w\in W_{\delta}} & \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
+%  & =\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)}_{2}\\
+%  & =\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)^{-1}\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
+%  & \le2\constop\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:continuous_invertibility})}\\
+%  & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{op}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
+%  & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
+%  & \le2\constop\constij\delta\sup_{w\in W_{\delta}}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:gh_difference_from_one})}\\
+%  & \le2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
+%  & =2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)-G\left(\thetaone,\onevec\right)}_{2}\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
+%  & \le2\constop[2]\constij\delta^{2}\textrm{ (Condition \ref{cond:paper_uniform_bound})}.
+% \end{align*}
 \end{proof}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
