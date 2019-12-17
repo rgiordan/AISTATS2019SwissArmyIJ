@@ -359,7 +359,9 @@ $\delta$ and for all $\theta\in\thetadeltaball$.
 Under \paperallcoreassum and \condref{paper_uniform_bound}, if $\delta\le\thetasize\constop[-1]$,
 then
 \begin{align*}
-\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}} & \norm{H\left(\theta,w\right)-H\left(\thetaone,\onevec\right)}_{1}\le\left(1+D\constw\liph\constop\right)\delta.
+\sup_{\theta\in\thetadeltaball}\sup_{w\in W_{\delta}} &
+    \norm{H\left(\theta,w\right)-H\left(\thetaone,\onevec\right)}_{1}
+    \le\left(1 + D\constw\liph\constop\right)\delta.
 \end{align*}
 \end{lem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -390,14 +392,6 @@ The constant that appears multiplying $\delta$ at the end of the proof of
 \lemref{gh_difference_from_one} will appear often in what follows, so we give it
 the special name $\constij$ in \defrefref{constants_definition}.
 
-% \begin{defn}
-% Define the constant that appears in the Hessian bound of \lemref{gh_difference_from_one}
-% as
-% \begin{align*}
-% \constij & :=1+D\constw\liph\constop.
-% \end{align*}
-% \end{defn}
-%
 Note that \lemref{gh_difference_from_one} places a condition on how
 small $\delta$ must be in order for our regularity conditions to
 apply. \lemref{theta_difference_bound} will guarantee that $\thetaw\in\thetadeltaball$,
@@ -511,7 +505,6 @@ function of $w$. We want to bound the error, $\thetaij\left(w\right)-\thetaw$.
 \begin{thm}
 \label{thmref:taylor_error_first}
 
-% TODO: this needs to be done with the integral form.
 Under \paperallcoreassum and \condref{paper_uniform_bound},
 when $\delta\le\deltasize$,
 %
@@ -536,7 +529,7 @@ Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound} implies that
 $\thetaw\in\thetadeltaball$ so, \lemref{continuous_invertibility}
 and \lemref{hess_integral_invertible} implies that
 $\hint\left(\thetaw,w\right)$ is invertible and we can solve for
-$\thetaw-\thetaone$.
+$\thetaw - \thetaone$.
 %
 \begin{align*}
 \thetaw[w]-\thetaone & =
@@ -577,11 +570,46 @@ Eliminating $\thetaone$ and taking the supremum of both sides gives
     \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
  & \le2\constop\sup_{w\in W_{\delta}}\norm{
     \hint\left(\thetaw,w\right) -
-    H\left(\thetaone,\onevec\right)}_{2}
+        H\left(\thetaone,\onevec\right)}_{2}
     \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}
-    \textrm{ (ordering of matrix norms)}\\
+    \textrm{ (ordering of matrix norms)}.
+\end{align*}
+%
+We now observe that, under \lemref{gh_difference_from_one},
+%
+\begin{align*}
+\MoveEqLeft
+\sup_{w\in W_{\delta}}\norm{
+    \hint\left(\thetaw, w\right) -
+    H(\thetaone, \onevec)}_{2} \\
+=& \sup_{w\in W_{\delta}}\norm{
+    \int_0^1 \left(
+        H(\thetaone + t (\theta - \thetaone), w) dt -
+        H(\thetaone, \onevec)\right)}_{2} \\
+\le&
+    \sup_{w\in W_{\delta}}
+    \int_0^1 \norm{
+        H(\thetaone + t (\theta - \thetaone), w) -
+        H(\thetaone, \onevec)}_{2} dt
+        \textrm{ (Jensen's inequality)} \\
+\le&
+    \sup_{\theta\in\thetadeltaball} \sup_{w\in W_{\delta}}
+    \norm{H(\theta), w) - H(\thetaone, \onevec)}_{2} \\
+\le&
+    \sup_{\theta\in\thetadeltaball} \sup_{w\in W_{\delta}}
+    \norm{H(\theta, w) - H(\thetaone, \onevec)}_{2}
+    \textrm{ (ordering of norms)}\\
+\le& \left(1 + D\constw\liph\constop\right)\delta
+    \textrm{ (Lemma \ref{lem:gh_difference_from_one})}
+\end{align*}
+%
+Continuing,
+%
+\begin{align*}
+\sup_{w\in W_{\delta}} &
+    \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
  % & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
- & \textrm{ OK need to fix Lemma \ref{lem:gh_difference_from_one}} &\\
+ % & \textrm{ OK need to fix Lemma \ref{lem:gh_difference_from_one}} &\\
  & \le2\constop\constij\delta\sup_{w\in W_{\delta}}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:gh_difference_from_one})}\\
  & \le2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
  & =2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)-G\left(\thetaone,\onevec\right)}_{2}\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
