@@ -92,7 +92,7 @@ We will apply \eqref{matrix_norm_continuity} using the operator norm
 $\norm{\cdot}_{op}$, for which $\norm I_{op}=1$ and with $D := B - A$.
 Because $\norm{A^{-1}}_{op}\le \constop$, $A$ is invertible.
 
-Assume that $\norm{A-B}_{2}\le r (\constop)^{-1}$.  First, note that
+Assume that $\norm{A-B}_{1}\le \frac{1}{2} (\constop)^{-1}$.  First, note that
 %
 \begin{align}\label{eq:ab_matrix_condition_fulfilled}
 \norm{A^{-1}}_{op} \norm{D}_{op} &=
@@ -159,8 +159,7 @@ into a vector.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The Taylor series residual of \proprefref{taylor_series_remainder} will show up
-repeatedly, so we will give it a concise name and prove that the integral
-inherits bounds on the operator norm of the inverse of the Hessian.
+repeatedly, so we will give it a concise name in the following definition.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -168,7 +167,8 @@ inherits bounds on the operator norm of the inverse of the Hessian.
 \begin{defn}
 \label{defref:hess_integral}
 %
-For a fixed weight, $w$, define the Hessian integral
+For a fixed weight $w$ and a fixed parameter $\theta$, define the Hessian
+integral
 %
 \begin{align*}
 \hint(\theta, w) :=&
@@ -179,38 +179,6 @@ For a fixed weight, $w$, define the Hessian integral
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{lem}\label{lem:hess_integral_invertible}
-%
-If, for some domain $D$ and some constant $C$, $\sup_{\theta \in D}
-\norm{H(\theta, w)^{-1}}_{op} \le C$, then
-$\sup_{\theta \in D} \norm{\hint(\theta, w)^{-1}}_{op} \le C$.
-%
-\end{lem}
-
-\begin{proof}
-%
-By definition of the operator norm,
-%
-\begin{align*}
-\norm{\hint(\theta, w)^{-1}}_{op}^{-1} =&
-    \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1} v^T \hint(\theta, w) v \\
-=& \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1}
-    \int_0^1 v^T H(\thetaone + t (\theta - \thetaone), w) v dt \\
-\ge& \int_0^1 \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1}
-    v^T H(\thetaone + t (\theta - \thetaone), w) v dt \\
-\ge& \inf_{\theta \in D} \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1}
-        v^T H(\theta, w) v \\
-\ge& C^{-1}.
-\end{align*}
-%
-The result follows by inverting both sides of the inequality.
-%
-\end{proof}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -241,7 +209,44 @@ in terms of $\delta$. (\thmrefref{taylor_error_first} below.)
 %
 We begin by showing that the difference between $\thetaw$ and $\thetaone$
 for $w\in W_{\delta}$ can be made small by making $\delta$ from
-\condref{paper_uniform_bound} small.
+\condref{paper_uniform_bound} small.  First, however, we need to prove that
+operator norm bounds on $H(\theta, w)$ also apply to the integrated Hessian
+$\hint(\theta, w)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{lem}\label{lem:hess_integral_invertible}
+Invertibility of the integrated Hessian.
+%
+If, for some domain $\Omega$ and some constant $C$, $\sup_{\theta \in \Omega}
+\norm{H(\theta, w)^{-1}}_{op} \le C$, then
+$\sup_{\theta \in \Omega} \norm{\hint(\theta, w)^{-1}}_{op} \le C$.
+%
+\end{lem}
+
+\begin{proof}
+%
+By definition of the operator norm,
+%
+\begin{align*}
+\norm{\hint(\theta, w)^{-1}}_{op}^{-1} =&
+    \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1} v^T \hint(\theta, w) v \\
+=& \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1}
+    \int_0^1 v^T H(\thetaone + t (\theta - \thetaone), w) v dt \\
+\ge& \int_0^1 \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1}
+    v^T H(\thetaone + t (\theta - \thetaone), w) v dt \\
+\ge& \inf_{\theta \in \Omega} \min_{v \in \mathbb{R}^D: \norm{v}_2 = 1}
+        v^T H(\theta, w) v \\
+\ge& C^{-1}.
+\end{align*}
+%
+The result follows by inverting both sides of the inequality.
+%
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -329,22 +334,42 @@ In other words, \lemref{theta_difference_bound} states that \condref{paper_unifo
 implies $\thetaw\in\thetadeltaball$ when $w\in W_{\delta}$.
 
 Next, we show that closeness in $\theta$ will mean closeness in $H\left(\theta,w\right)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{lem}
 \label{lem:bounded_continuous} Boundedness and continuity. Under
 \paperallcoreassum and \condref{paper_uniform_bound},
+%
 \begin{align*}
-\textrm{for all }\theta\in\thetaball,\quad\sup_{w\in W}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1} & \le D\constw\liph\norm{\theta-\thetaone}_{2}.
+\textrm{for all }\theta\in\thetaball,\quad\sup_{w\in W}
+    \norm{H\left(\theta,w\right) - H\left(\thetaone,w\right)}_{1}
+    &\le D\constw\liph\norm{\theta-\thetaone}_{2}.
 \end{align*}
 \end{lem}
 \begin{proof}
+%
 For $\theta\in\thetaball$,
+%
 \begin{align*}
-\sup_{w\in W}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1} & =\sup_{w\in W}\norm{\frac{1}{N}\sum_{n=1}^{N}w_{n}\left(h_{n}\left(\theta\right)-h_{n}\left(\thetaone\right)\right)}_{1}\textrm{ (by definition)}\\
- & \le D\sup_{w\in W}\frac{\norm w_{2}}{\sqrt{N}}\frac{\norm{h\left(\theta\right)-h\left(\thetaone\right)}_{2}}{\sqrt{N}}\textrm{ (Proposition \ref{propref:tensor_cauchy_schwartz})}\\
- & \le D\constw\frac{\norm{h\left(\theta\right)-h\left(\thetaone\right)}_{2}}{\sqrt{N}}\textrm{ (Assumption \ref{assu:paper_weight_bounded})}\\
- & \le D\constw\liph\norm{\theta-\thetaone}_{2}\textrm{ (Assumption \ref{assu:paper_lipschitz} and }\theta\in\thetaball\textrm{)}.
+\sup_{w\in W}\norm{H\left(\theta,w\right)-H\left(\thetaone,w\right)}_{1} &=
+    \sup_{w\in W}\norm{\frac{1}{N}
+    \sum_{n=1}^{N}w_{n}\left(h_{n}\left(\theta\right) -h_{n}\left(\thetaone\right)\right)}_{1}\textrm{ (by definition)}\\
+ & \le D\sup_{w\in W}\frac{\norm w_{2}}{\sqrt{N}}
+    \frac{\norm{h\left(\theta\right) -
+                h\left(\thetaone\right)}_{2}}{\sqrt{N}}
+        \textrm{ (Proposition \ref{propref:tensor_cauchy_schwartz})}\\
+ & \le D\constw\frac{\norm{h\left(\theta\right) -
+                           h\left(\thetaone\right)}_{2}}{\sqrt{N}}
+       \textrm{ (Assumption \ref{assu:paper_weight_bounded})}\\
+ & \le D\constw\liph\norm{\theta-\thetaone}_{2}
+    \textrm{ (Assumption \ref{assu:paper_lipschitz} and }
+    \theta\in\thetaball\textrm{)}.
 \end{align*}
+%
 \end{proof}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 We now combine \lemref{theta_difference_bound} and \lemref{bounded_continuous}
 to show that $H\left(\theta,w\right)$ is close to its value at the
@@ -402,7 +427,7 @@ continuity, and none of our results will apply.
 
 Next, using \lemref{gh_difference_from_one}, we can extend the operator bound on
 $\hone^{-1}$ from \assuref{paper_hessian} to $H\left(\theta,w\right)^{-1}$ for
-all $w\in W_{\delta}$, not only for $w=\onevec$.
+all $w\in W_{\delta}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -446,6 +471,7 @@ to the integrated Hessian $\hint(\theta, w)$ when $\theta \in \thetadeltaball$.
 
 \begin{lem}
 \label{lem:int_h_difference_from_one}
+Bounds for difference of the integrated Hessian.
 %
 Under \paperallcoreassum and \condref{paper_uniform_bound}, if $\delta\le\thetasize\constop[-1]$ and $\theta \in \thetadeltaball$,
 %
@@ -505,8 +531,6 @@ This follows from \lemref{continuous_invertibility} and the implicit
 function theorem.
 \end{proof}
 By definition, $\thetahat\left(\onevec\right)=\thetaone$.
-
-
 
 
 
@@ -575,7 +599,7 @@ $\tilde{w} = w$, we have
 %
 Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound} implies that
 $\thetaw\in\thetadeltaball$ so, \lemref{continuous_invertibility}
-and \lemref{hess_integral_invertible} implies that
+and \lemref{hess_integral_invertible} imply that
 $\hint\left(\thetaw,w\right)$ is invertible and we can solve for
 $\thetaw - \thetaone$.
 %
@@ -621,8 +645,6 @@ Eliminating $\thetaone$ and taking the supremum of both sides gives
         H\left(\thetaone,\onevec\right)}_{1}
     \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}
     \textrm{ (ordering of matrix norms)} \\
- % & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
- % & \textrm{ OK need to fix Lemma \ref{lem:gh_difference_from_one}} &\\
  & \le 2\constop\constij\delta
     \sup_{w\in W_{\delta}}
         \norm{H\left(\thetaone,\onevec\right)^{-1}
@@ -640,48 +662,6 @@ Eliminating $\thetaone$ and taking the supremum of both sides gives
     \textrm{ (Condition \ref{cond:paper_uniform_bound})}.
 \end{align*}
 
-
-
-------------------
-
-------------------
-
-------------------
-
-OLD OLD OLD
-
-
-% By a one-term Taylor series expansion of $G\left(\thetaw,w\right)=0$
-% in $\theta$ around $\thetaone$, we have, for some $\thetawiggle$
-% such that $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
-% %
-% \begin{align*}
-% 0=G\left(\thetaw,w\right) & =G\left(\thetaone,w\right)+H\left(\thetawiggle,w\right)\left(\thetaw[w]-\thetaone\right).
-% \end{align*}
-% Because $\delta\in W_{\delta}$, \lemref{theta_difference_bound}
-% implies that $\thetaw\in\thetadeltaball$. Because $\norm{\thetawiggle-\thetaone}_{2}\le\norm{{{\thetaw}}-\thetaone}_{2}$,
-% $\thetawiggle\in\thetadeltaball$ as well. Because $\thetawiggle\in\thetadeltaball$,
-% \lemref{continuous_invertibility} implies that $H\left(\thetawiggle,w\right)$
-% is invertible, so we can solve for $\thetaw-\thetaone$.
-% \begin{align*}
-% \thetaw[w]-\thetaone & =-H\left(\thetawiggle,w\right)^{-1}G\left(\thetaone,w\right)\\
-%  & =\left(-H\left(\thetawiggle,w\right)^{-1}+H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetaone,\onevec\right)^{-1}\right)G\left(\thetaone,w\right)\\
-%  & =\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)+\thetaij\left(w\right)-\thetaone.
-% \end{align*}
-% Eliminating $\thetaone$ and taking the supremum of both sides we
-% have that
-% \begin{align*}
-% \sup_{w\in W_{\delta}} & \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
-%  & =\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetaone,\onevec\right)^{-1}-H\left(\thetawiggle,w\right)^{-1}\right)G\left(\thetaone,w\right)}_{2}\\
-%  & =\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)^{-1}\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
-%  & \le2\constop\sup_{w\in W_{\delta}}\norm{\left(H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)\right)H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:continuous_invertibility})}\\
-%  & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{op}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
-%  & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
-%  & \le2\constop\constij\delta\sup_{w\in W_{\delta}}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:gh_difference_from_one})}\\
-%  & \le2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
-%  & =2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)-G\left(\thetaone,\onevec\right)}_{2}\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
-%  & \le2\constop[2]\constij\delta^{2}\textrm{ (Condition \ref{cond:paper_uniform_bound})}.
-% \end{align*}
 \end{proof}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
