@@ -392,17 +392,20 @@ The constant that appears multiplying $\delta$ at the end of the proof of
 \lemref{gh_difference_from_one} will appear often in what follows, so we give it
 the special name $\constij$ in \defrefref{constants_definition}.
 
-Note that \lemref{gh_difference_from_one} places a condition on how
-small $\delta$ must be in order for our regularity conditions to
-apply. \lemref{theta_difference_bound} will guarantee that $\thetaw\in\thetadeltaball$,
-but if we are not able to make $\delta$ arbitrarily small in \condref{paper_uniform_bound},
-then we are not guaranteed to ensure that $\thetadeltaball\subseteq\thetaball$,
-will not be able to assume Lipschitz continuity, and none of our results
-will apply.
+Note that \lemref{gh_difference_from_one} places a condition on how small
+$\delta$ must be in order for our regularity conditions to apply.
+\lemref{theta_difference_bound} will guarantee that $\thetaw\in\thetadeltaball$,
+but if we are not able to make $\delta$ arbitrarily small in
+\condref{paper_uniform_bound}, then we are not guaranteed to ensure that
+$\thetadeltaball\subseteq\thetaball$, will not be able to assume Lipschitz
+continuity, and none of our results will apply.
 
-Next, using \lemref{gh_difference_from_one}, we can extend the operator
-bound on $\hone^{-1}$ from \assuref{paper_hessian} to $H\left(\theta,w\right)^{-1}$
-for all $w\in W_{\delta}$, not only for $w=\onevec$.
+Next, using \lemref{gh_difference_from_one}, we can extend the operator bound on
+$\hone^{-1}$ from \assuref{paper_hessian} to $H\left(\theta,w\right)^{-1}$ for
+all $w\in W_{\delta}$, not only for $w=\onevec$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{lem}
 \label{lem:continuous_invertibility}Uniform invertibility of the
@@ -432,17 +435,62 @@ To apply \lemref{gh_difference_from_one} we additionally require
 that $\delta\le\thetasize\constop[-1]$. By taking $\delta\le\min\left\{ \thetasize\constop[-1],\frac{1}{2}\constop[-1]\constij^{-1}\right\} $,
 we satisfy \eqref{h_bound} and the result follows.
 \end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Next, we show that a version of \lemref{gh_difference_from_one} also applies
+to the integrated Hessian $\hint(\theta, w)$ when $\theta \in \thetadeltaball$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{lem}
+\label{lem:int_h_difference_from_one}
 %
-At last, the upper bound on $\delta$ will be sufficient to control
-the error terms in our approximation. For compactness, we give it
-the name $\deltasize$ in \defrefref{constants_definition}.
-% \begin{defn}
-% Define $\deltasize$ as the upper bound on $\delta$ given by \lemref{continuous_invertibility}.
-% \begin{align*}
-% \deltasize & :=\min\left\{ \thetasize\constop[-1],\frac{1}{2}\constop[-1]\constij^{-1}\right\} .
-% \end{align*}
+Under \paperallcoreassum and \condref{paper_uniform_bound}, if $\delta\le\thetasize\constop[-1]$ and $\theta \in \thetadeltaball$,
 %
-%\end{defn}
+\begin{align*}
+\sup_{w\in W_{\delta}}\norm{
+    \hint\left(\theta, w\right) -
+    H(\thetaone, \onevec)}_{1}
+\le& \left(1 + D\constw\liph\constop\right)\delta.
+\end{align*}
+%
+\end{lem}
+%
+\begin{proof}
+\begin{align*}
+\MoveEqLeft
+\sup_{w\in W_{\delta}}\norm{
+    \hint\left(\theta, w\right) -
+    H(\thetaone, \onevec)}_{1} &\\
+=& \sup_{w\in W_{\delta}}\norm{
+    \int_0^1 \left(
+        H(\thetaone + t (\theta - \thetaone), w) dt -
+        H(\thetaone, \onevec)\right)}_{1}
+        &\textrm{ (Definition \ref{defref:hess_integral})} \\
+\le&
+    \sup_{w\in W_{\delta}}
+    \int_0^1 \norm{
+        H(\thetaone + t (\theta - \thetaone), w) -
+        H(\thetaone, \onevec)}_{1} dt
+        &\textrm{ (Jensen's inequality)} \\
+\le&
+    \sup_{\theta\in\thetadeltaball} \sup_{w\in W_{\delta}}
+    \norm{H(\theta), w) - H(\thetaone, \onevec)}_{1} &\\
+\le&
+    \left(1 + D\constw\liph\constop\right)\delta
+    &\textrm{ (Lemma \ref{lem:gh_difference_from_one})}
+\end{align*}
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+With these results in hand, the upper bound on $\delta$ will at last be
+sufficient to control the error terms in our approximation. For compactness, we
+give it the upper bound on $\delta$ the name $\deltasize$ in
+\defrefref{constants_definition}.
 
 Finally, we state a result that will allow us to define derivatives
 of $\thetaw$ with respect to $w$.
@@ -570,50 +618,26 @@ Eliminating $\thetaone$ and taking the supremum of both sides gives
     \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\\
  & \le2\constop\sup_{w\in W_{\delta}}\norm{
     \hint\left(\thetaw,w\right) -
-        H\left(\thetaone,\onevec\right)}_{2}
+        H\left(\thetaone,\onevec\right)}_{1}
     \norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}
-    \textrm{ (ordering of matrix norms)}.
-\end{align*}
-%
-We now observe that, under \lemref{gh_difference_from_one},
-%
-\begin{align*}
-\MoveEqLeft
-\sup_{w\in W_{\delta}}\norm{
-    \hint\left(\thetaw, w\right) -
-    H(\thetaone, \onevec)}_{2} \\
-=& \sup_{w\in W_{\delta}}\norm{
-    \int_0^1 \left(
-        H(\thetaone + t (\theta - \thetaone), w) dt -
-        H(\thetaone, \onevec)\right)}_{2} \\
-\le&
-    \sup_{w\in W_{\delta}}
-    \int_0^1 \norm{
-        H(\thetaone + t (\theta - \thetaone), w) -
-        H(\thetaone, \onevec)}_{2} dt
-        \textrm{ (Jensen's inequality)} \\
-\le&
-    \sup_{\theta\in\thetadeltaball} \sup_{w\in W_{\delta}}
-    \norm{H(\theta), w) - H(\thetaone, \onevec)}_{2} \\
-\le&
-    \sup_{\theta\in\thetadeltaball} \sup_{w\in W_{\delta}}
-    \norm{H(\theta, w) - H(\thetaone, \onevec)}_{2}
-    \textrm{ (ordering of norms)}\\
-\le& \left(1 + D\constw\liph\constop\right)\delta
-    \textrm{ (Lemma \ref{lem:gh_difference_from_one})}
-\end{align*}
-%
-Continuing,
-%
-\begin{align*}
-\sup_{w\in W_{\delta}} &
-    \norm{\thetaij\left(w\right)-{{\thetaw[w]}}}_{2}\\
+    \textrm{ (ordering of matrix norms)} \\
  % & \le2\constop\sup_{w\in W_{\delta}}\norm{H\left(\thetawiggle,w\right)-H\left(\thetaone,\onevec\right)}_{2}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (ordering of matrix norms)}\\
  % & \textrm{ OK need to fix Lemma \ref{lem:gh_difference_from_one}} &\\
- & \le2\constop\constij\delta\sup_{w\in W_{\delta}}\norm{H\left(\thetaone,\onevec\right)^{-1}G\left(\thetaone,w\right)}_{2}\textrm{ (Lemma \ref{lem:gh_difference_from_one})}\\
- & \le2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}\textrm{ (Assumption \ref{assu:paper_hessian})}\\
- & =2\constop[2]\constij\delta\sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)-G\left(\thetaone,\onevec\right)}_{2}\textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
- & \le2\constop[2]\constij\delta^{2}\textrm{ (Condition \ref{cond:paper_uniform_bound})}.
+ & \le 2\constop\constij\delta
+    \sup_{w\in W_{\delta}}
+        \norm{H\left(\thetaone,\onevec\right)^{-1}
+              G\left(\thetaone,w\right)}_{2}
+    \textrm{ (Lemma \ref{lem:int_h_difference_from_one})}\\
+ & \le2\constop[2]\constij\delta
+    \sup_{w\in W_{\delta}}\norm{G\left(\thetaone,w\right)}_{2}
+    \textrm{ (Assumption \ref{assu:paper_hessian})}\\
+ & =2\constop[2]\constij\delta
+    \sup_{w\in W_{\delta}}
+        \norm{G\left(\thetaone,w\right) -
+              G\left(\thetaone,\onevec\right)}_{2}
+    \textrm{ (because }G\left(\thetaone,\onevec\right)=0\textrm{)}\\
+ & \le2\constop[2]\constij\delta^{2}
+    \textrm{ (Condition \ref{cond:paper_uniform_bound})}.
 \end{align*}
 
 
