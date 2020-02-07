@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -30,6 +30,11 @@ B.~Clarke.
   solutions to maximum likelihood type equations.
 \newblock \emph{The Annals of Statistics}, 11\penalty0 (4):\penalty0
   1196--1205, 1983.
+
+\bibitem[Dudley(2018)]{dudley:2018:analysis}
+R.~Dudley.
+\newblock \emph{Real analysis and probability}.
+\newblock Chapman and Hall/CRC, 2018.
 
 \bibitem[Efron(1982)]{efron:1982:jackknife}
 B.~Efron.
