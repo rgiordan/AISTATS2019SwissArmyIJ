@@ -1,7 +1,7 @@
 autograd==1.2
 json-tricks==3.11.2
 matplotlib==3.0.1
-numpy==1.14.2
+numpy==1.22.0
 pandas==0.22.0
 git+https://github.com/rgiordan/paragami@master#egg=paragami
 git+https://github.com/rgiordan/vittles@master#egg=vittles
