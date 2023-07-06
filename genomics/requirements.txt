@@ -7,7 +7,7 @@ git+https://github.com/rgiordan/paragami@master#egg=paragami
 git+https://github.com/rgiordan/vittles@master#egg=vittles
 git+https://github.com/rgiordan/LinearResponseVariationalBayes.py@master#egg=LinearResponseVariationalBayes
 patsy==0.5.0
-scipy==1.0.1
+scipy==1.10.0
 sklearn==0.0
 jupyter==1.0.0
 jupyter-client==5.2.4
